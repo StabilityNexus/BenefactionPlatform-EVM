@@ -47,6 +47,12 @@ This command starts a local Ethereum network using Hardhat. The network runs on 
 
 3. On a second terminal, deploy the test contract:
 
+Deployed Contracts:
+
+Participation Token Contract: 0x66f5AE57323CED3d3eb0D41a066F4DB628B00392
+FundingVaultFactory Contract: 0x55cbF8284EDCd412bbac595b33Be1Ecdd04a79B7
+
+
 ```
 yarn deploy
 ```
