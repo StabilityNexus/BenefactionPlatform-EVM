@@ -162,7 +162,7 @@ const deployedContracts = {
       inheritedFunctions: {},
     },
     ParticipationToken: {
-      address: "0x0B306BF915C4d645ff596e518fAf3F9669b97016",
+      address: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
       abi: [
         {
           inputs: [

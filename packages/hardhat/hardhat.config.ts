@@ -49,6 +49,10 @@ const config: HardhatUserConfig = {
         enabled: process.env.MAINNET_FORKING_ENABLED === "true",
       },
     },
+    localhost: {
+      url: "http://127.0.0.1:8545",
+      accounts: [deployerPrivateKey],
+    },
     mainnet: {
       url: `https://cloudflare-eth.com`,
       accounts: [deployerPrivateKey],
