@@ -7,11 +7,16 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     FundingVaultFactory: {
-      address: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+      address: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
       abi: [
         {
           inputs: [],
           name: "FundingVaultFactory__CannotBeAZeroAddress",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "FundingVaultFactory__InvalidIndex",
           type: "error",
         },
         {
@@ -114,6 +119,16 @@ const deployedContracts = {
               name: "_projectURL",
               type: "string",
             },
+            {
+              internalType: "string",
+              name: "_projectTitle",
+              type: "string",
+            },
+            {
+              internalType: "string",
+              name: "_projectDescription",
+              type: "string",
+            },
           ],
           name: "deployFundingVault",
           outputs: [
@@ -153,6 +168,52 @@ const deployedContracts = {
               internalType: "uint256",
               name: "",
               type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "start",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "end",
+              type: "uint256",
+            },
+          ],
+          name: "getVaults",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "address",
+                  name: "vaultAddress",
+                  type: "address",
+                },
+                {
+                  internalType: "string",
+                  name: "title",
+                  type: "string",
+                },
+                {
+                  internalType: "string",
+                  name: "description",
+                  type: "string",
+                },
+                {
+                  internalType: "uint256",
+                  name: "deadline",
+                  type: "uint256",
+                },
+              ],
+              internalType: "struct FundingVaultFactory.Vault[]",
+              name: "",
+              type: "tuple[]",
             },
           ],
           stateMutability: "view",
