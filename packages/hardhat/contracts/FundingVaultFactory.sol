@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.20;
+
 
 /**
  * Layout of the contract
@@ -23,6 +23,8 @@ pragma solidity ^0.8.20;
  * getters
  */
 
+pragma solidity ^0.8.20;
+
 import {FundingVault} from "./FundingVault.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
@@ -37,14 +39,24 @@ contract FundingVaultFactory{
     error FundingVaultFactory__deadlineCannotBeInThePast();
     error FundingVaultFactory__MinFundingAmountCanNotBeZero();
     error FundingVault__TokenTransferFailed();
+    error FundingVaultFactory__InvalidIndex();
 
+    struct Vault{
+        address vaultAddress;
+        string title;
+        string description;
+        uint256 deadline;
+    }
 
 
     // State Variables //
+    mapping(uint256 => Vault) private vaults;
+
     IERC20 private participationToken;
     uint256 private s_fundingVaultIdCounter;
 
-    mapping(uint256 fundingVaultId => address fundingVault) private s_fundingVaults;
+    
+
 
 
     // Events //
@@ -72,7 +84,9 @@ contract FundingVaultFactory{
         address _withdrawlAddress,
         address _developerFeeAddress, 
         uint256 _developerFeePercentage, 
-        string memory _projectURL
+        string memory _projectURL,
+        string memory _projectTitle,
+        string memory _projectDescription
     ) external returns (address) {
         if (_participationToken == address(0) || _withdrawlAddress == address(0) || _developerFeeAddress == address(0)){
             revert FundingVaultFactory__CannotBeAZeroAddress();
@@ -99,23 +113,54 @@ contract FundingVaultFactory{
         _withdrawlAddress,
         _developerFeeAddress, 
         _developerFeePercentage, 
-        _projectURL
+        _projectURL,
+        _projectTitle,
+        _projectDescription
         );
 
-        bool tokenTransferSuccess = participationToken.transferFrom(msg.sender, address(fundingVault), _participationTokenAmount);
+        
+        transferParticipationTokens(msg.sender, address(fundingVault), _participationTokenAmount);
+
+        Vault storage vault = vaults[fundingVaultId];
+        vault.vaultAddress = address(fundingVault);
+        vault.title = _projectTitle;
+        vault.description = _projectDescription;
+        vault.deadline = _blockLimit;
+        
+        emit FundingVaultDeployed(address(fundingVault));     
+        return address(fundingVault);
+    }
+
+     /**
+     * @notice Get list of all funding vaults
+     * @dev to access the list of all the available funding vaults on the platform 
+     */ 
+    function getVaults(uint256 start, uint256 end) external view returns(Vault[] memory)
+    {
+        if(end > s_fundingVaultIdCounter || start > end || start == 0)
+        {
+            revert FundingVaultFactory__InvalidIndex();
+        }
+        Vault[] memory allVaults = new Vault[](end - start + 1);
+
+        for(uint i = start; i <= end;i++)
+        {
+            allVaults[i - start] = vaults[i];
+        }
+        return allVaults;
+    }
+
+    function transferParticipationTokens(address from, address to, uint256 amount) private{
+        bool tokenTransferSuccess = participationToken.transferFrom(from, to, amount);
         if (!tokenTransferSuccess){
             revert FundingVault__TokenTransferFailed();
         }
-
-        s_fundingVaults[fundingVaultId] = address(fundingVault);
-        emit FundingVaultDeployed(address(fundingVault));     
-        return address(fundingVault);
     }
 
 
     // Getters //
     function getFundingVault(uint256 _fundingVaultId) external view returns (address) {
-        return s_fundingVaults[_fundingVaultId];
+        return vaults[_fundingVaultId].vaultAddress;
     }
 
     function getTotalNumberOfFundingVaults() external view returns (uint256) {

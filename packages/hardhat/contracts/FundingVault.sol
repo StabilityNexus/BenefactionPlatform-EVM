@@ -1,3 +1,4 @@
+
 //SPDX-License-Identifier: MIT
 
 /**
@@ -24,7 +25,7 @@
  * pure functions
  * getters
  */
- pragma solidity ^0.8.20;
+pragma solidity ^0.8.20;
 
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
@@ -56,11 +57,32 @@ contract FundingVault{
     uint256 private blockLimit;
     uint256 private minFundingAmount; //The minimum amount of ETH required in the contract to enable withdrawal.
     uint256 private exchangeRate; //The exchange rate of ERG per token
+    address private projectOwner;
     address private withdrawlAddress;
     address private developerFeeAddress; //develper address
     uint256 private developerFeePercentage; 
     string  private projectURL;
+    string private projectTitle;
+    string private projectDescription;
     bool private fundsWithdrawn;
+
+
+    /** 
+    * @dev A vault is represented as a struct  
+    */ 
+
+    struct Vault{
+        address withdrawlAddress;
+        address participationToken;
+        uint256 participationTokenAmount;  
+        uint256 minFundingAmount;
+        uint256 blockLimit;
+        uint256 exchangeRate;
+        string projectURL;
+        string projectTitle;
+        string projectDescription;
+    }
+    
 
 
     // Events //
@@ -104,9 +126,11 @@ contract FundingVault{
         uint256 _blockLimit,
         uint256 _exchangeRate,
         address _withdrawlAddress,
-        address _developerFeeAddress, //develper address
+        address _developerFeeAddress, 
         uint256 _developerFeePercentage, 
-        string memory _projectURL
+        string memory _projectURL,
+        string memory _projectTitle,
+        string memory _projectDescription
     ) {
         
         participationToken  = IERC20(_participationToken);
@@ -118,6 +142,8 @@ contract FundingVault{
         developerFeeAddress =  _developerFeeAddress;
         developerFeePercentage = _developerFeePercentage;
         projectURL = _projectURL;
+        projectTitle = _projectTitle;
+        projectDescription = _projectDescription;
     }
 
     
@@ -233,7 +259,25 @@ contract FundingVault{
         if (!tokenTransferSuccess){
             revert FundingVault__TokenTransferFailed();
         }
-        
+    }
+
+    /**
+     * @notice Get funding vault details
+     * @dev to access all neccassary parameters of the funding vault
+     */ 
+    function getVaults() external view returns(Vault memory)
+    {
+        Vault memory VaultDetails;
+        VaultDetails.withdrawlAddress = withdrawlAddress;
+        VaultDetails.participationToken  = address(participationToken);
+        VaultDetails.participationTokenAmount  = participationTokenAmount ;
+        VaultDetails.minFundingAmount = minFundingAmount;
+        VaultDetails.blockLimit = blockLimit;
+        VaultDetails.exchangeRate = exchangeRate;
+        VaultDetails.projectURL = projectURL;
+        VaultDetails.projectTitle = projectTitle;
+        VaultDetails.projectDescription = projectDescription;
+        return VaultDetails;
     }
 
 }
