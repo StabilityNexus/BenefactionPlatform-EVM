@@ -26,6 +26,7 @@ pragma solidity ^0.8.26;
 
 import {FundingVault} from "./FundingVault.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 /**
  * @title FundingVaultFactory
@@ -34,11 +35,10 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
  */
 contract FundingVaultFactory{
     // Errors //
-    error FundingVaultFactory__CannotBeAZeroAddress();
-    error FundingVaultFactory__deadlineCannotBeInThePast();
-    error FundingVaultFactory__MinFundingAmountCanNotBeZero();
-    error FundingVault__TokenTransferFailed();
-    error FundingVaultFactory__InvalidIndex();
+    error CannotBeAZeroAddress();
+    error deadlineCannotBeInThePast();
+    error MinFundingAmountCanNotBeZero();
+    error InvalidIndex();
 
     struct Vault {
         address vaultAddress;
@@ -51,6 +51,7 @@ contract FundingVaultFactory{
     // State Variables //
     mapping(uint256 => Vault) public vaults;
 
+    using SafeERC20 for IERC20;
     IERC20 private participationToken;
     uint256 private s_fundingVaultIdCounter;
 
@@ -74,7 +75,7 @@ contract FundingVaultFactory{
      * @param _developerFeePercentage the percentage fee for the developer.
      * @param _projectURL A link or hash containing the project's information (e.g., GitHub repository).
      */
-    function deployFundingVault(
+    function deployFundingVault (
         address _participationToken,
         uint256 _participationTokenAmount,  
         uint256 _minFundingAmount,
@@ -88,13 +89,13 @@ contract FundingVaultFactory{
         string memory _projectDescription
     ) external returns (address) {
         if (_participationToken == address(0) || _withdrawalAddress == address(0) || _developerFeeAddress == address(0)){
-            revert FundingVaultFactory__CannotBeAZeroAddress();
+            revert CannotBeAZeroAddress();
         }
         if (block.timestamp > _timeStamp) {
-            revert FundingVaultFactory__deadlineCannotBeInThePast();
+            revert deadlineCannotBeInThePast();
         }
         if (_minFundingAmount == 0) {
-            revert FundingVaultFactory__MinFundingAmountCanNotBeZero();
+            revert MinFundingAmountCanNotBeZero();
         }
 
 
@@ -138,7 +139,7 @@ contract FundingVaultFactory{
     {
         if(end > s_fundingVaultIdCounter || start > end || start == 0)
         {
-            revert FundingVaultFactory__InvalidIndex();
+            revert InvalidIndex();
         }
         Vault[] memory allVaults = new Vault[](end - start + 1);
 
@@ -150,10 +151,7 @@ contract FundingVaultFactory{
     }
 
     function transferParticipationTokens(address from, address to, uint256 amount) private{
-        bool tokenTransferSuccess = participationToken.transferFrom(from, to, amount);
-        if (!tokenTransferSuccess){
-            revert FundingVault__TokenTransferFailed();
-        }
+        participationToken.safeTransferFrom(from,to,amount);
     }
 
 

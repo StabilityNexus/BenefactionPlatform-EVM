@@ -27,6 +27,7 @@
 pragma solidity ^0.8.26;
 
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 /**
  * @title FundingVault
@@ -36,21 +37,18 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 contract FundingVault{
 
  // Errors //
-    error AmountCannotBeZero(); 
     error minFundingAmountReached();
     error minFundingAmountNotReached();
     error err_deadlineNotPassed(); 
-    error err_deadlinePassed();
     error NotEnoughTokens(); 
-    error noTokenBalance();
     error err_fundsWithdrawn();
-    error TokenTransferFailed(); 
     error EthTransferFailed();
     error EthTransferToDeveloperFailed();
     error EthTransferToWithdrawlFailed();
 
 
     // State Variables //
+    using SafeERC20 for IERC20;
     IERC20 private immutable participationToken;
     uint256 private participationTokenAmount;
     uint256 private timeStamp;
@@ -88,21 +86,6 @@ contract FundingVault{
     event TokensPurchased(address indexed from, uint256 indexed amount);
     event Refund(address indexed user, uint256 indexed amount);
     event FundsWithdrawn(address indexed user, uint256 amount);
-
-
-
-    modifier deadlinePassed() {
-        if (block.timestamp < timeStamp) {
-            revert err_deadlineNotPassed();
-        }
-        _;
-    }
-    modifier deadlineNotPassed() {
-        if (block.timestamp > timeStamp) {
-            revert err_deadlinePassed();
-        }
-        _;
-    }
 
 
     // Functions //
@@ -150,11 +133,7 @@ contract FundingVault{
      * @dev Allows users to deposit Ether and purchase participation tokens based on exchange rate
      */
     function purchaseTokens() external payable {
-        if (msg.value == 0){
-            revert AmountCannotBeZero();
-        }
-
-        
+         
         uint256 tokenAmount = msg.value * exchangeRate;
 
         if (participationToken.balanceOf(address(this)) < tokenAmount)
@@ -162,11 +141,7 @@ contract FundingVault{
             revert NotEnoughTokens();
         }
 
-        
-        bool tokenTransferSuccess = participationToken.transfer(msg.sender, tokenAmount);
-        if (!tokenTransferSuccess){
-            revert TokenTransferFailed();
-        }
+        participationToken.safeTransfer(msg.sender,tokenAmount);
         
         emit TokensPurchased(msg.sender, tokenAmount);
     }
@@ -175,23 +150,19 @@ contract FundingVault{
      * @dev Allows users to exchange tokens for Eth (at exchange rate) if and only if the deadline has passed and the minimum number of tokens has not been sold.
      */
 
-    function refundTokens() external payable deadlineNotPassed{
+    function refundTokens() external payable{
+
+        if (block.timestamp < timeStamp) {
+            revert err_deadlineNotPassed();
+        }
 
         if(address(this).balance >= minFundingAmount){
         revert minFundingAmountReached();
         }
         uint tokensHeld = participationToken.balanceOf(msg.sender);
-        if (tokensHeld == 0){
-        revert noTokenBalance();
-        }
-
         uint256 refundAmount = tokensHeld * exchangeRate;
 
-       
-        bool tokenTransferSuccess = participationToken.transferFrom(msg.sender, address(this), tokensHeld);
-        if (!tokenTransferSuccess){
-            revert TokenTransferFailed();
-        }
+        participationToken.safeTransferFrom(msg.sender,address(this),tokensHeld);
        
         (bool ethTransferSuccess, ) = payable(msg.sender).call{value: refundAmount}("");
         if (!ethTransferSuccess){
@@ -242,10 +213,8 @@ contract FundingVault{
         if (tokensHeld < UnsoldTokenAmount){
             revert NotEnoughTokens();
         }
-        bool tokenTransferSuccess = participationToken.transferFrom(address(this), withdrawlAddress, UnsoldTokenAmount);
-        if (!tokenTransferSuccess){
-            revert TokenTransferFailed();
-        }
+        
+        participationToken.safeTransferFrom(address(this),withdrawlAddress,UnsoldTokenAmount);
        
      }
 
@@ -254,10 +223,7 @@ contract FundingVault{
      * @param additionalTokens amount to add
     */
     function addTokens(uint256 additionalTokens) external {
-        bool tokenTransferSuccess = participationToken.transferFrom(msg.sender, address(this), additionalTokens);
-        if (!tokenTransferSuccess){
-            revert TokenTransferFailed();
-        }
+        participationToken.safeTransferFrom(msg.sender,address(this),additionalTokens);
     }
 
     /**
