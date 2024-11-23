@@ -118,8 +118,7 @@ contract FundingVaultFactory{
         _projectDescription
         );
 
-        
-        transferParticipationTokens(msg.sender, address(fundingVault), _participationTokenAmount);
+        participationToken.safeTransferFrom(msg.sender,address(fundingVault),_participationTokenAmount);
 
         Vault storage vault = vaults[fundingVaultId];
         vault.vaultAddress = address(fundingVault);
@@ -149,11 +148,6 @@ contract FundingVaultFactory{
         }
         return allVaults;
     }
-
-    function transferParticipationTokens(address from, address to, uint256 amount) private{
-        participationToken.safeTransferFrom(from,to,amount);
-    }
-
 
     function getTotalNumberOfFundingVaults() external view returns (uint256) {
         return s_fundingVaultIdCounter;
