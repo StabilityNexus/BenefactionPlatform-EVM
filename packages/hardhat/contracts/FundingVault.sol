@@ -45,6 +45,7 @@ contract FundingVault{
     error EthTransferFailed();
     error EthTransferToDeveloperFailed();
     error EthTransferToWithdrawlFailed();
+    error ownerOnly();
 
 
     // State Variables //
@@ -178,6 +179,11 @@ contract FundingVault{
      */
 
     function withdrawFunds() external {
+        if(msg.sender != withdrawlAddress)
+        {
+            revert ownerOnly();
+        } 
+
         uint256 fundsCollected = address(this).balance;
         
         if(fundsCollected < minFundingAmount){
@@ -209,6 +215,10 @@ contract FundingVault{
     */
 
      function withdrawUnsoldTokens(uint256 UnsoldTokenAmount) external  {
+        if(msg.sender != withdrawlAddress)
+        {
+            revert ownerOnly();
+        }
         uint tokensHeld = participationToken.balanceOf(address(this));
         if (tokensHeld < UnsoldTokenAmount){
             revert NotEnoughTokens();
@@ -223,6 +233,10 @@ contract FundingVault{
      * @param additionalTokens amount to add
     */
     function addTokens(uint256 additionalTokens) external {
+        if(msg.sender != withdrawlAddress)
+        {
+            revert ownerOnly();
+        }
         participationToken.safeTransferFrom(msg.sender,address(this),additionalTokens);
     }
 
