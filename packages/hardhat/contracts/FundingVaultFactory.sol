@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: AEL
 
 /**
  * Layout of the contract
@@ -69,7 +69,7 @@ contract FundingVaultFactory{
      * @param _participationToken The token that will be used as participation token to incentivise donators
      * @param _participationTokenAmount Theinitial  participation token amount which will be in fundingVault
      * @param _minFundingAmount The minimum amount required to make withdraw of funds possible
-     * @param _timeStamp The date (block height) limit until which withdrawal or after which refund is allowed.
+     * @param _timestamp The date (block height) limit until which withdrawal or after which refund is allowed.
      * @param _withdrawalAddress The address for withdrawal of funds
      * @param _developerFeeAddress the address for the developer fee
      * @param _developerFeePercentage the percentage fee for the developer.
@@ -79,7 +79,7 @@ contract FundingVaultFactory{
         address _participationToken,
         uint256 _participationTokenAmount,  
         uint256 _minFundingAmount,
-        uint256 _timeStamp,
+        uint256 _timestamp,
         uint256 _exchangeRate,
         address _withdrawalAddress,
         address _developerFeeAddress, 
@@ -88,15 +88,11 @@ contract FundingVaultFactory{
         string memory _projectTitle,
         string memory _projectDescription
     ) external returns (address) {
-        if (_participationToken == address(0) || _withdrawalAddress == address(0) || _developerFeeAddress == address(0)){
-            revert CannotBeAZeroAddress();
-        }
-        if (block.timestamp > _timeStamp) {
-            revert deadlineCannotBeInThePast();
-        }
-        if (_minFundingAmount == 0) {
-            revert MinFundingAmountCanNotBeZero();
-        }
+        if (_participationToken == address(0) || _withdrawalAddress == address(0) || _developerFeeAddress == address(0))  revert CannotBeAZeroAddress();
+
+        if (block.timestamp > _timestamp) revert deadlineCannotBeInThePast();
+        
+        if (_minFundingAmount == 0) revert MinFundingAmountCanNotBeZero();
 
 
 
@@ -108,7 +104,7 @@ contract FundingVaultFactory{
         _participationToken,
         _participationTokenAmount,  
         _minFundingAmount,
-        _timeStamp,
+        _timestamp,
         _exchangeRate,
         _withdrawalAddress,
         _developerFeeAddress, 
@@ -124,7 +120,7 @@ contract FundingVaultFactory{
         vault.vaultAddress = address(fundingVault);
         vault.title = _projectTitle;
         vault.description = _projectDescription;
-        vault.deadline = _timeStamp;
+        vault.deadline = _timestamp;
         
         emit FundingVaultDeployed(address(fundingVault));     
         return address(fundingVault);
@@ -136,10 +132,8 @@ contract FundingVaultFactory{
      */ 
     function getVaults(uint256 start, uint256 end) external view returns(Vault[] memory)
     {
-        if(end > s_fundingVaultIdCounter || start > end || start == 0)
-        {
-            revert InvalidIndex();
-        }
+        if(end > s_fundingVaultIdCounter || start > end || start == 0)  revert InvalidIndex();
+
         Vault[] memory allVaults = new Vault[](end - start + 1);
 
         for(uint i = start; i <= end;i++)

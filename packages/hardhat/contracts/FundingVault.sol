@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: AEL
 
 /**
  * Layout of the contract
@@ -37,15 +37,14 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 contract FundingVault{
 
  // Errors //
-    error minFundingAmountReached();
-    error minFundingAmountNotReached();
-    error err_deadlineNotPassed(); 
+    error MinFundingAmountReached();
+    error MinFundingAmountNotReached();
+    error Err_deadlineNotPassed(); 
     error NotEnoughTokens(); 
-    error err_fundsWithdrawn();
     error EthTransferFailed();
     error EthTransferToDeveloperFailed();
-    error EthTransferToWithdrawlFailed();
-    error ownerOnly();
+    error EthTransferToWithdrawalFailed();
+    error OwnerOnly();
 
 
     // State Variables //
@@ -54,15 +53,14 @@ contract FundingVault{
     uint256 private participationTokenAmount;
     uint256 private timeStamp;
     uint256 private immutable minFundingAmount; //The minimum amount of ETH required in the contract to enable withdrawal.
-    uint256 private exchangeRate; //The exchange rate of ERG per token
+    uint256 private exchangeRate; //The exchange rate of ETH per token
     address private projectOwner;
-    address private withdrawlAddress;
+    address private withdrawalAddress;
     address private developerFeeAddress; //develper address
     uint256 private developerFeePercentage; 
     string  private projectURL;
     string private projectTitle;
     string private projectDescription;
-    bool private fundsWithdrawn;
 
 
     /** 
@@ -70,7 +68,7 @@ contract FundingVault{
     */ 
 
     struct Vault {
-        address withdrawlAddress;
+        address withdrawalAddress;
         address participationToken;
         uint256 participationTokenAmount;  
         uint256 minFundingAmount;
@@ -89,6 +87,14 @@ contract FundingVault{
     event FundsWithdrawn(address indexed user, uint256 amount);
 
 
+    // Modifiers //
+
+    modifier onlyOwner {
+        if (msg.sender != withdrawalAddress)  revert OwnerOnly();
+        _;
+    }
+
+
     // Functions //
 
      /**
@@ -96,7 +102,7 @@ contract FundingVault{
      * @param _participationTokenAmount Theinitial  participation token amount which will be in fundingVault
      * @param _minFundingAmount The minimum amount required to make withdraw of funds possible
      * @param _timeStamp The date (block height) limit until which withdrawal or after which refund is allowed.
-     * @param _withdrawlAddress The address for withdrawl of funds
+     * @param _withdrawalAddress The address for withdrawal of funds
      * @param _developerFeeAddress the address for the developer fee
      * @param _developerFeePercentage the percentage fee for the developer.
      * @param _projectURL A link or hash containing the project's information (e.g., GitHub repository).
@@ -108,7 +114,7 @@ contract FundingVault{
         uint256 _minFundingAmount,
         uint256 _timeStamp,
         uint256 _exchangeRate,
-        address _withdrawlAddress,
+        address _withdrawalAddress,
         address _developerFeeAddress, 
         uint256 _developerFeePercentage, 
         string memory _projectURL,
@@ -121,7 +127,7 @@ contract FundingVault{
         minFundingAmount = _minFundingAmount;
         timeStamp = _timeStamp;
         exchangeRate = _exchangeRate;
-        withdrawlAddress = _withdrawlAddress;
+        withdrawalAddress = _withdrawalAddress;
         developerFeeAddress =  _developerFeeAddress;
         developerFeePercentage = _developerFeePercentage;
         projectURL = _projectURL;
@@ -137,10 +143,8 @@ contract FundingVault{
          
         uint256 tokenAmount = msg.value * exchangeRate;
 
-        if (participationToken.balanceOf(address(this)) < tokenAmount)
-        {
-            revert NotEnoughTokens();
-        }
+        if (participationToken.balanceOf(address(this)) < tokenAmount) revert NotEnoughTokens();
+        
 
         participationToken.safeTransfer(msg.sender,tokenAmount);
         
@@ -153,22 +157,19 @@ contract FundingVault{
 
     function refundTokens() external payable{
 
-        if (block.timestamp < timeStamp) {
-            revert err_deadlineNotPassed();
-        }
+        if (block.timestamp < timeStamp)  revert Err_deadlineNotPassed();
+        
 
-        if(address(this).balance >= minFundingAmount){
-        revert minFundingAmountReached();
-        }
+        if(address(this).balance >= minFundingAmount) revert MinFundingAmountReached();
+        
         uint tokensHeld = participationToken.balanceOf(msg.sender);
         uint256 refundAmount = tokensHeld * exchangeRate;
 
         participationToken.safeTransferFrom(msg.sender,address(this),tokensHeld);
        
         (bool ethTransferSuccess, ) = payable(msg.sender).call{value: refundAmount}("");
-        if (!ethTransferSuccess){
-            revert EthTransferFailed();
-        }
+
+        if (!ethTransferSuccess)   revert EthTransferFailed(); 
         
         emit Refund(msg.sender, refundAmount);       
     }
@@ -178,34 +179,23 @@ contract FundingVault{
      
      */
 
-    function withdrawFunds() external {
-        if(msg.sender != withdrawlAddress)
-        {
-            revert ownerOnly();
-        } 
-
+    function withdrawFunds() external onlyOwner {
+        
         uint256 fundsCollected = address(this).balance;
         
-        if(fundsCollected < minFundingAmount){
-            revert minFundingAmountNotReached();
-        }
-        
-        if(fundsWithdrawn == true){
-            revert err_fundsWithdrawn();
-        }
+        if(fundsCollected < minFundingAmount) revert MinFundingAmountNotReached();
         
         uint256 developerFee = (fundsCollected * developerFeePercentage) / 100;
         uint256 amountToWithdraw = fundsCollected - developerFee;
 
         (bool successA, ) = payable(developerFeeAddress).call{value: developerFee}("");
-        if (!successA){
-            revert EthTransferToDeveloperFailed();
-        }
-        (bool successB, ) = payable(withdrawlAddress).call{value: amountToWithdraw}("");
-        if (!successB){
-            revert EthTransferToWithdrawlFailed();
-        }
-        fundsWithdrawn = true;
+
+        if (!successA) revert EthTransferToDeveloperFailed();
+
+        (bool successB, ) = payable(withdrawalAddress).call{value: amountToWithdraw}("");
+
+        if (!successB) revert EthTransferToWithdrawalFailed();
+
         emit FundsWithdrawn(msg.sender, amountToWithdraw);
     }
 
@@ -214,17 +204,13 @@ contract FundingVault{
      * @param UnsoldTokenAmount amount to withdraw
     */
 
-     function withdrawUnsoldTokens(uint256 UnsoldTokenAmount) external  {
-        if(msg.sender != withdrawlAddress)
-        {
-            revert ownerOnly();
-        }
+     function withdrawUnsoldTokens(uint256 UnsoldTokenAmount) external onlyOwner {
         uint tokensHeld = participationToken.balanceOf(address(this));
         if (tokensHeld < UnsoldTokenAmount){
             revert NotEnoughTokens();
         }
         
-        participationToken.safeTransferFrom(address(this),withdrawlAddress,UnsoldTokenAmount);
+        participationToken.safeTransferFrom(address(this),withdrawalAddress,UnsoldTokenAmount);
        
      }
 
@@ -232,11 +218,7 @@ contract FundingVault{
      * @dev Allows Project owners to  add more tokens to the contract at any time.
      * @param additionalTokens amount to add
     */
-    function addTokens(uint256 additionalTokens) external {
-        if(msg.sender != withdrawlAddress)
-        {
-            revert ownerOnly();
-        }
+    function addTokens(uint256 additionalTokens) external onlyOwner {
         participationToken.safeTransferFrom(msg.sender,address(this),additionalTokens);
     }
 
@@ -244,10 +226,10 @@ contract FundingVault{
      * @notice Get funding vault details
      * @dev to access all necessary parameters of the funding vault
      */ 
-    function getVaults() external view returns(Vault memory)
+    function getVault() external view returns(Vault memory)
     {
         Vault memory VaultDetails;
-        VaultDetails.withdrawlAddress = withdrawlAddress;
+        VaultDetails.withdrawalAddress = withdrawalAddress;
         VaultDetails.participationToken  = address(participationToken);
         VaultDetails.participationTokenAmount  = participationTokenAmount ;
         VaultDetails.minFundingAmount = minFundingAmount;
