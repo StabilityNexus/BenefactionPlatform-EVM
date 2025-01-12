@@ -51,7 +51,7 @@ contract FundingVault{
     using SafeERC20 for IERC20;
     IERC20 private immutable participationToken;
     uint256 private participationTokenAmount;
-    uint256 private timeStamp;
+    uint256 private timestamp;
     uint256 private immutable minFundingAmount; //The minimum amount of ETH required in the contract to enable withdrawal.
     uint256 private exchangeRate; //The exchange rate of ETH per token
     address private projectOwner;
@@ -72,7 +72,7 @@ contract FundingVault{
         address participationToken;
         uint256 participationTokenAmount;  
         uint256 minFundingAmount;
-        uint256 timeStamp;
+        uint256 timestamp;
         uint256 exchangeRate;
         string projectURL;
         string projectTitle;
@@ -101,7 +101,7 @@ contract FundingVault{
      * @param _participationToken The token that will be used as participation token to incentivise donators
      * @param _participationTokenAmount Theinitial  participation token amount which will be in fundingVault
      * @param _minFundingAmount The minimum amount required to make withdraw of funds possible
-     * @param _timeStamp The date (block height) limit until which withdrawal or after which refund is allowed.
+     * @param _timestamp The date (block height) limit until which withdrawal or after which refund is allowed.
      * @param _withdrawalAddress The address for withdrawal of funds
      * @param _developerFeeAddress the address for the developer fee
      * @param _developerFeePercentage the percentage fee for the developer.
@@ -112,7 +112,7 @@ contract FundingVault{
         address _participationToken,
         uint256 _participationTokenAmount,  
         uint256 _minFundingAmount,
-        uint256 _timeStamp,
+        uint256 _timestamp,
         uint256 _exchangeRate,
         address _withdrawalAddress,
         address _developerFeeAddress, 
@@ -125,7 +125,7 @@ contract FundingVault{
         participationToken  = IERC20(_participationToken);
         participationTokenAmount  = _participationTokenAmount ;
         minFundingAmount = _minFundingAmount;
-        timeStamp = _timeStamp;
+        timestamp = _timestamp;
         exchangeRate = _exchangeRate;
         withdrawalAddress = _withdrawalAddress;
         developerFeeAddress =  _developerFeeAddress;
@@ -157,7 +157,7 @@ contract FundingVault{
 
     function refundTokens() external payable{
 
-        if (block.timestamp < timeStamp)  revert Err_deadlineNotPassed();
+        if (block.timestamp < timestamp)  revert Err_deadlineNotPassed();
         
 
         if(address(this).balance >= minFundingAmount) revert MinFundingAmountReached();
@@ -233,7 +233,7 @@ contract FundingVault{
         VaultDetails.participationToken  = address(participationToken);
         VaultDetails.participationTokenAmount  = participationTokenAmount ;
         VaultDetails.minFundingAmount = minFundingAmount;
-        VaultDetails.timeStamp = timeStamp;
+        VaultDetails.timestamp = timestamp;
         VaultDetails.exchangeRate = exchangeRate;
         VaultDetails.projectURL = projectURL;
         VaultDetails.projectTitle = projectTitle;
