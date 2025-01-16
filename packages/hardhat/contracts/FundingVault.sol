@@ -39,7 +39,7 @@ contract FundingVault{
  // Errors //
     error MinFundingAmountReached();
     error MinFundingAmountNotReached();
-    error Err_deadlineNotPassed(); 
+    error DeadlineNotPassed(); 
     error NotEnoughTokens(); 
     error EthTransferFailed();
     error EthTransferToDeveloperFailed();
@@ -49,18 +49,18 @@ contract FundingVault{
 
     // State Variables //
     using SafeERC20 for IERC20;
-    IERC20 private immutable participationToken;
-    uint256 private participationTokenAmount;
-    uint256 private timestamp;
-    uint256 private immutable minFundingAmount; //The minimum amount of ETH required in the contract to enable withdrawal.
-    uint256 private exchangeRate; //The exchange rate of ETH per token
-    address private projectOwner;
-    address private withdrawalAddress;
+    IERC20 public immutable participationToken;
+    uint256 public participationTokenAmount;
+    uint256 public timestamp;
+    uint256 public immutable minFundingAmount; //The minimum amount of ETH required in the contract to enable withdrawal.
+    uint256 public exchangeRate; //The exchange rate of ETH per token
+    address public withdrawalAddress; //WithdrawalAddress is also considered as owner of the Vault. 
     address private developerFeeAddress; //develper address
     uint256 private developerFeePercentage; 
-    string  private projectURL;
-    string private projectTitle;
-    string private projectDescription;
+    string  public projectURL;
+    string public projectTitle;
+    string public projectDescription;
+    bool private minFundingReached;
 
 
     /** 
@@ -96,30 +96,19 @@ contract FundingVault{
 
 
     // Functions //
-
-     /**
-     * @param _participationToken The token that will be used as participation token to incentivise donators
-     * @param _participationTokenAmount Theinitial  participation token amount which will be in fundingVault
-     * @param _minFundingAmount The minimum amount required to make withdraw of funds possible
-     * @param _timestamp The date (block height) limit until which withdrawal or after which refund is allowed.
-     * @param _withdrawalAddress The address for withdrawal of funds
-     * @param _developerFeeAddress the address for the developer fee
-     * @param _developerFeePercentage the percentage fee for the developer.
-     * @param _projectURL A link or hash containing the project's information (e.g., GitHub repository).
-     */
     
      constructor (
-        address _participationToken,
-        uint256 _participationTokenAmount,  
-        uint256 _minFundingAmount,
-        uint256 _timestamp,
-        uint256 _exchangeRate,
-        address _withdrawalAddress,
-        address _developerFeeAddress, 
-        uint256 _developerFeePercentage, 
-        string memory _projectURL,
-        string memory _projectTitle,
-        string memory _projectDescription
+        address _participationToken, //The token that will be used as participation token to incentivise donators
+        uint256 _participationTokenAmount,  //Theinitial  participation token amount which will be in fundingVault
+        uint256 _minFundingAmount, //The minimum amount required to make withdraw of funds possible
+        uint256 _timestamp, //The date (block height) limit until which withdrawal or after which refund is allowed.
+        uint256 _exchangeRate, // the exchange rate of eth per token. 
+        address _withdrawalAddress, //The address for withdrawal of funds
+        address _developerFeeAddress, //the address for the developer fee
+        uint256 _developerFeePercentage, //the percentage fee for the developer.
+        string memory _projectURL, //A link or hash containing the project's information (e.g., GitHub repository).
+        string memory _projectTitle, // Name of the Project
+        string memory _projectDescription // Short description of the project
     ) {
         
         participationToken  = IERC20(_participationToken);
@@ -140,13 +129,18 @@ contract FundingVault{
      * @dev Allows users to deposit Ether and purchase participation tokens based on exchange rate
      */
     function purchaseTokens() external payable {
-         
+
         uint256 tokenAmount = msg.value * exchangeRate;
 
         if (participationToken.balanceOf(address(this)) < tokenAmount) revert NotEnoughTokens();
-        
-
         participationToken.safeTransfer(msg.sender,tokenAmount);
+
+        if(!minFundingReached)
+        {
+            if(address(this).balance >= minFundingAmount){
+                minFundingReached = true;
+            }
+        }
         
         emit TokensPurchased(msg.sender, tokenAmount);
     }
@@ -157,10 +151,9 @@ contract FundingVault{
 
     function refundTokens() external payable{
 
-        if (block.timestamp < timestamp)  revert Err_deadlineNotPassed();
+        if (block.timestamp < timestamp)  revert DeadlineNotPassed();
         
-
-        if(address(this).balance >= minFundingAmount) revert MinFundingAmountReached();
+        if(minFundingReached) revert MinFundingAmountReached();
         
         uint tokensHeld = participationToken.balanceOf(msg.sender);
         uint256 refundAmount = tokensHeld * exchangeRate;
@@ -180,11 +173,10 @@ contract FundingVault{
      */
 
     function withdrawFunds() external onlyOwner {
-        
+    
+        if(!minFundingReached) revert MinFundingAmountNotReached();
+
         uint256 fundsCollected = address(this).balance;
-        
-        if(fundsCollected < minFundingAmount) revert MinFundingAmountNotReached();
-        
         uint256 developerFee = (fundsCollected * developerFeePercentage) / 100;
         uint256 amountToWithdraw = fundsCollected - developerFee;
 
@@ -206,9 +198,7 @@ contract FundingVault{
 
      function withdrawUnsoldTokens(uint256 UnsoldTokenAmount) external onlyOwner {
         uint tokensHeld = participationToken.balanceOf(address(this));
-        if (tokensHeld < UnsoldTokenAmount){
-            revert NotEnoughTokens();
-        }
+        if (tokensHeld < UnsoldTokenAmount) revert NotEnoughTokens();
         
         participationToken.safeTransferFrom(address(this),withdrawalAddress,UnsoldTokenAmount);
        
