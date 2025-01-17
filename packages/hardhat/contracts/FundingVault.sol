@@ -32,7 +32,7 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 /**
  * @title FundingVault
  * @author Muhammad Zain Nasir
- * @notice A contract that allows users to deposit funds and receive participation tokens in return box creator can call WithdrawFunds if there enough funds collected
+ * @notice A contract that allows users to deposit funds and receive proof-of-funding token in return box creator can call WithdrawFunds if there enough funds collected
  */
 contract FundingVault{
 
@@ -49,18 +49,18 @@ contract FundingVault{
 
     // State Variables //
     using SafeERC20 for IERC20;
-    IERC20 public immutable participationToken;
-    uint256 public participationTokenAmount;
-    uint256 public timestamp;
-    uint256 public immutable minFundingAmount; //The minimum amount of ETH required in the contract to enable withdrawal.
-    uint256 public exchangeRate; //The exchange rate of ETH per token
-    address public withdrawalAddress; //WithdrawalAddress is also considered as owner of the Vault. 
-    address private developerFeeAddress; //develper address
-    uint256 private developerFeePercentage; 
-    string  public projectURL;
-    string public projectTitle;
-    string public projectDescription;
-    bool private minFundingReached;
+    IERC20 public immutable participationToken; // The token that will be used as participation token to incentivise contributions
+    uint256 public participationTokenAmount; // The initial  participation token amount which will be in fundingVault
+    uint256 public timestamp; // The date limit until which withdrawal or after which refund is allowed.
+    uint256 public immutable minFundingAmount; // The minimum amount of ETH required in the contract to enable withdrawal.
+    uint256 public exchangeRate; // The exchange rate of ETH per token
+    address public withdrawalAddress; // WithdrawalAddress is also considered as owner of the Vault. 
+    address private developerFeeAddress; // Developer address
+    uint256 private developerFeePercentage; // Developer percentage in funds collected
+    string  public projectURL; // A link or hash containing the project's information (e.g., GitHub repository).
+    string public projectTitle; // Name of the Project
+    string public projectDescription; // Short description of the project
+    bool private minFundingReached; // Variable to know if minimum funding raised or not
 
 
     /** 
@@ -98,15 +98,15 @@ contract FundingVault{
     // Functions //
     
      constructor (
-        address _participationToken, //The token that will be used as participation token to incentivise donators
-        uint256 _participationTokenAmount,  //Theinitial  participation token amount which will be in fundingVault
-        uint256 _minFundingAmount, //The minimum amount required to make withdraw of funds possible
-        uint256 _timestamp, //The date (block height) limit until which withdrawal or after which refund is allowed.
-        uint256 _exchangeRate, // the exchange rate of eth per token. 
-        address _withdrawalAddress, //The address for withdrawal of funds
-        address _developerFeeAddress, //the address for the developer fee
-        uint256 _developerFeePercentage, //the percentage fee for the developer.
-        string memory _projectURL, //A link or hash containing the project's information (e.g., GitHub repository).
+        address _participationToken, // The token that will be used as participation token to incentivise contributions
+        uint256 _participationTokenAmount,  // The initial  participation token amount which will be in fundingVault
+        uint256 _minFundingAmount, // The minimum amount required to make withdraw of funds possible
+        uint256 _timestamp, // The date (block height) limit until which withdrawal or after which refund is allowed.
+        uint256 _exchangeRate, // The exchange rate of eth per token. 
+        address _withdrawalAddress, // The address for withdrawal of funds
+        address _developerFeeAddress, // The address for the developer fee
+        uint256 _developerFeePercentage, // The percentage fee for the developer.
+        string memory _projectURL, // A link or hash containing the project's information (e.g., GitHub repository).
         string memory _projectTitle, // Name of the Project
         string memory _projectDescription // Short description of the project
     ) {
@@ -126,7 +126,7 @@ contract FundingVault{
 
     
     /**
-     * @dev Allows users to deposit Ether and purchase participation tokens based on exchange rate
+     * @dev Allows users to deposit Ether and purchase proof-of-funding token based on exchange rate
      */
     function purchaseTokens() external payable {
 
@@ -135,12 +135,11 @@ contract FundingVault{
         if (participationToken.balanceOf(address(this)) < tokenAmount) revert NotEnoughTokens();
         participationToken.safeTransfer(msg.sender,tokenAmount);
 
-        if(!minFundingReached)
-        {
-            if(address(this).balance >= minFundingAmount){
-                minFundingReached = true;
-            }
+      
+        if (!minFundingReached && address(this).balance >= minFundingAmount){
+            minFundingReached = true;
         }
+        
         
         emit TokensPurchased(msg.sender, tokenAmount);
     }
@@ -153,7 +152,7 @@ contract FundingVault{
 
         if (block.timestamp < timestamp)  revert DeadlineNotPassed();
         
-        if(minFundingReached) revert MinFundingAmountReached();
+        if (minFundingReached) revert MinFundingAmountReached();
         
         uint tokensHeld = participationToken.balanceOf(msg.sender);
         uint256 refundAmount = tokensHeld * exchangeRate;
@@ -174,7 +173,7 @@ contract FundingVault{
 
     function withdrawFunds() external onlyOwner {
     
-        if(!minFundingReached) revert MinFundingAmountNotReached();
+        if (!minFundingReached) revert MinFundingAmountNotReached();
 
         uint256 fundsCollected = address(this).balance;
         uint256 developerFee = (fundsCollected * developerFeePercentage) / 100;
@@ -197,8 +196,7 @@ contract FundingVault{
     */
 
      function withdrawUnsoldTokens(uint256 UnsoldTokenAmount) external onlyOwner {
-        uint tokensHeld = participationToken.balanceOf(address(this));
-        if (tokensHeld < UnsoldTokenAmount) revert NotEnoughTokens();
+        if (participationToken.balanceOf(address(this)) < UnsoldTokenAmount) revert NotEnoughTokens();
         
         participationToken.safeTransferFrom(address(this),withdrawalAddress,UnsoldTokenAmount);
        

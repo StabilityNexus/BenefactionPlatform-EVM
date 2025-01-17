@@ -100,7 +100,7 @@ contract FundingVaultFactory{
         uint256 fundingVaultId = s_fundingVaultIdCounter;
         participationToken = IERC20(_participationToken);
 
-        FundingVault fundingVault = new FundingVault(
+        FundingVault fundingVault = new FundingVault (
         _participationToken,
         _participationTokenAmount,  
         _minFundingAmount,
@@ -132,11 +132,11 @@ contract FundingVaultFactory{
      */ 
     function getVaults(uint256 start, uint256 end) external view returns(Vault[] memory)
     {
-        if(end > s_fundingVaultIdCounter || start > end || start == 0)  revert InvalidIndex();
+        if (end > s_fundingVaultIdCounter || start > end || start == 0)  revert InvalidIndex();
 
         Vault[] memory allVaults = new Vault[](end - start + 1);
 
-        for(uint i = start; i <= end;i++)
+        for (uint i = start; i <= end;i++)
         {
             allVaults[i - start] = vaults[i];
         }
