@@ -24,7 +24,7 @@
  * pure functions
  * getters
  */
-pragma solidity ^0.8.26;
+pragma solidity ^0.8.18;
 
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
@@ -36,7 +36,7 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
  */
 contract FundingVault{
 
- // Errors //
+    // Errors //
     error MinFundingAmountReached();
     error MinFundingAmountNotReached();
     error DeadlineNotPassed(); 
@@ -49,8 +49,8 @@ contract FundingVault{
 
     // State Variables //
     using SafeERC20 for IERC20;
-    IERC20 public immutable proof-of-fundingToken; // The token that will be used as proof-of-funding token to incentivise contributions
-    uint256 public proof-of-fundingTokenAmount; // The initial  proof-of-funding token amount which will be in fundingVault
+    IERC20 public immutable proofOfFundingToken; // The token that will be used as proof-of-funding token to incentivise contributions
+    uint256 public proofOfFundingTokenAmount; // The initial  proof-of-funding token amount which will be in fundingVault
     uint256 public timestamp; // The date limit until which withdrawal or after which refund is allowed.
     uint256 public immutable minFundingAmount; // The minimum amount of ETH required in the contract to enable withdrawal.
     uint256 public exchangeRate; // The exchange rate of ETH per token
@@ -60,7 +60,7 @@ contract FundingVault{
     string  public projectURL; // A link or hash containing the project's information (e.g., GitHub repository).
     string public projectTitle; // Name of the Project
     string public projectDescription; // Short description of the project
-    bool private minFundingReached; // Variable to know if minimum funding raised or not
+    uint256 private amountRaised; // Variable to know if minimum funding raised or not
 
 
     /** 
@@ -69,8 +69,8 @@ contract FundingVault{
 
     struct Vault {
         address withdrawalAddress;
-        address proof-of-fundingToken;
-        uint256 proof-of-fundingTokenAmount;  
+        address proofOfFundingToken;
+        uint256 proofOfFundingTokenAmount;  
         uint256 minFundingAmount;
         uint256 timestamp;
         uint256 exchangeRate;
@@ -79,25 +79,6 @@ contract FundingVault{
         string projectDescription;
     }
     
-
-
-    /** 
-    * @dev A vault is represented as a struct  
-    */ 
-
-    struct Vault{
-        address withdrawlAddress;
-        address proof-of-fundingToken;
-        uint256 proof-of-fundingTokenAmount;  
-        uint256 minFundingAmount;
-        uint256 blockLimit;
-        uint256 exchangeRate;
-        string projectURL;
-        string projectTitle;
-        string projectDescription;
-    }
-    
-
 
     // Events //
     event TokensPurchased(address indexed from, uint256 indexed amount);
@@ -116,8 +97,8 @@ contract FundingVault{
     // Functions //
     
      constructor (
-        address _proof-of-fundingToken, // The token that will be used as proof-of-funding token to incentivise contributions
-        uint256 _proof-of-fundingTokenAmount,  // The initial  proof-of-funding token amount which will be in fundingVault
+        address _proofOfFundingToken, // The token that will be used as proof-of-funding token to incentivise contributions
+        uint256 _proofOfFundingTokenAmount,  // The initial  proof-of-funding token amount which will be in fundingVault
         uint256 _minFundingAmount, // The minimum amount required to make withdraw of funds possible
         uint256 _timestamp, // The date (block height) limit until which withdrawal or after which refund is allowed.
         uint256 _exchangeRate, // The exchange rate of eth per token. 
@@ -129,8 +110,8 @@ contract FundingVault{
         string memory _projectDescription // Short description of the project
     ) {
         
-        proof-of-fundingToken  = IERC20(_proof-of-fundingToken);
-        proof-of-fundingTokenAmount  = _proof-of-fundingTokenAmount ;
+        proofOfFundingToken  = IERC20(_proofOfFundingToken);
+        proofOfFundingTokenAmount  = _proofOfFundingTokenAmount ;
         minFundingAmount = _minFundingAmount;
         timestamp = _timestamp;
         exchangeRate = _exchangeRate;
@@ -152,14 +133,10 @@ contract FundingVault{
 
         uint256 tokenAmount = msg.value * exchangeRate;
 
-        if (proof-of-fundingToken.balanceOf(address(this)) < tokenAmount) revert NotEnoughTokens();
-        proof-of-fundingToken.safeTransfer(msg.sender,tokenAmount);
+        if (proofOfFundingToken.balanceOf(address(this)) < tokenAmount) revert NotEnoughTokens();
+        proofOfFundingToken.safeTransfer(msg.sender,tokenAmount);
 
-      
-        if (!minFundingReached && address(this).balance >= minFundingAmount){
-            minFundingReached = true;
-        }
-        
+        amountRaised = amountRaised + msg.value;
         
         emit TokensPurchased(msg.sender, tokenAmount);
     }
@@ -172,12 +149,12 @@ contract FundingVault{
 
         if (block.timestamp < timestamp)  revert DeadlineNotPassed();
         
-        if (minFundingReached) revert MinFundingAmountReached();
+        if (amountRaised >= minFundingAmount) revert MinFundingAmountReached();
         
-        uint tokensHeld = proof-of-fundingToken.balanceOf(msg.sender);
+        uint tokensHeld = proofOfFundingToken.balanceOf(msg.sender);
         uint256 refundAmount = tokensHeld * exchangeRate;
 
-        proof-of-fundingToken.safeTransferFrom(msg.sender,address(this),tokensHeld);
+        proofOfFundingToken.safeTransferFrom(msg.sender,address(this),tokensHeld);
        
         (bool ethTransferSuccess, ) = payable(msg.sender).call{value: refundAmount}("");
 
@@ -193,7 +170,7 @@ contract FundingVault{
 
     function withdrawFunds() external onlyOwner {
     
-        if (!minFundingReached) revert MinFundingAmountNotReached();
+        if (amountRaised < minFundingAmount) revert MinFundingAmountNotReached();
 
         uint256 fundsCollected = address(this).balance;
         uint256 developerFee = (fundsCollected * developerFeePercentage) / 100;
@@ -216,9 +193,9 @@ contract FundingVault{
     */
 
      function withdrawUnsoldTokens(uint256 UnsoldTokenAmount) external onlyOwner {
-        if (proof-of-fundingToken.balanceOf(address(this)) < UnsoldTokenAmount) revert NotEnoughTokens();
+        if (proofOfFundingToken.balanceOf(address(this)) < UnsoldTokenAmount) revert NotEnoughTokens();
         
-        proof-of-fundingToken.safeTransferFrom(address(this),withdrawalAddress,UnsoldTokenAmount);
+        proofOfFundingToken.safeTransferFrom(address(this),withdrawalAddress,UnsoldTokenAmount);
        
      }
 
@@ -227,7 +204,7 @@ contract FundingVault{
      * @param additionalTokens amount to add
     */
     function addTokens(uint256 additionalTokens) external onlyOwner {
-        proof-of-fundingToken.safeTransferFrom(msg.sender,address(this),additionalTokens);
+        proofOfFundingToken.safeTransferFrom(msg.sender,address(this),additionalTokens);
     }
 
     /**
@@ -238,8 +215,8 @@ contract FundingVault{
     {
         Vault memory VaultDetails;
         VaultDetails.withdrawalAddress = withdrawalAddress;
-        VaultDetails.proof-of-fundingToken  = address(proof-of-fundingToken);
-        VaultDetails.proof-of-fundingTokenAmount  = proof-of-fundingTokenAmount ;
+        VaultDetails.proofOfFundingToken  = address(proofOfFundingToken);
+        VaultDetails.proofOfFundingTokenAmount  = proofOfFundingTokenAmount ;
         VaultDetails.minFundingAmount = minFundingAmount;
         VaultDetails.timestamp = timestamp;
         VaultDetails.exchangeRate = exchangeRate;
