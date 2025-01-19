@@ -81,6 +81,24 @@ contract FundingVault{
     
 
 
+    /** 
+    * @dev A vault is represented as a struct  
+    */ 
+
+    struct Vault{
+        address withdrawlAddress;
+        address participationToken;
+        uint256 participationTokenAmount;  
+        uint256 minFundingAmount;
+        uint256 blockLimit;
+        uint256 exchangeRate;
+        string projectURL;
+        string projectTitle;
+        string projectDescription;
+    }
+    
+
+
     // Events //
     event TokensPurchased(address indexed from, uint256 indexed amount);
     event Refund(address indexed user, uint256 indexed amount);
@@ -120,6 +138,8 @@ contract FundingVault{
         developerFeeAddress =  _developerFeeAddress;
         developerFeePercentage = _developerFeePercentage;
         projectURL = _projectURL;
+        projectTitle = _projectTitle;
+        projectDescription = _projectDescription;
         projectTitle = _projectTitle;
         projectDescription = _projectDescription;
     }

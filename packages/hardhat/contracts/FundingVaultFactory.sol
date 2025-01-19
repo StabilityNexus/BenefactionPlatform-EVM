@@ -52,8 +52,10 @@ contract FundingVaultFactory{
     mapping(uint256 => Vault) public vaults;
 
     using SafeERC20 for IERC20;
-    IERC20 private participationToken;
+    IERC20 private proof-of-fundingToken;
     uint256 private s_fundingVaultIdCounter;
+
+    
 
     
 
@@ -66,8 +68,8 @@ contract FundingVaultFactory{
     // Functions //
 
     /**
-     * @param _participationToken The token that will be used as participation token to incentivise donators
-     * @param _participationTokenAmount Theinitial  participation token amount which will be in fundingVault
+     * @param _proof-of-fundingToken The token that will be used as proof-of-funding token to incentivise donators
+     * @param _proof-of-fundingTokenAmount Theinitial  proof-of-funding token amount which will be in fundingVault
      * @param _minFundingAmount The minimum amount required to make withdraw of funds possible
      * @param _timestamp The date (block height) limit until which withdrawal or after which refund is allowed.
      * @param _withdrawalAddress The address for withdrawal of funds
@@ -76,8 +78,8 @@ contract FundingVaultFactory{
      * @param _projectURL A link or hash containing the project's information (e.g., GitHub repository).
      */
     function deployFundingVault (
-        address _participationToken,
-        uint256 _participationTokenAmount,  
+        address _proof-of-fundingToken,
+        uint256 _proof-of-fundingTokenAmount,  
         uint256 _minFundingAmount,
         uint256 _timestamp,
         uint256 _exchangeRate,
@@ -87,8 +89,11 @@ contract FundingVaultFactory{
         string memory _projectURL,
         string memory _projectTitle,
         string memory _projectDescription
+        string memory _projectURL,
+        string memory _projectTitle,
+        string memory _projectDescription
     ) external returns (address) {
-        if (_participationToken == address(0) || _withdrawalAddress == address(0) || _developerFeeAddress == address(0))  revert CannotBeAZeroAddress();
+        if (_proof-of-fundingToken == address(0) || _withdrawalAddress == address(0) || _developerFeeAddress == address(0))  revert CannotBeAZeroAddress();
 
         if (block.timestamp > _timestamp) revert deadlineCannotBeInThePast();
         
@@ -98,11 +103,11 @@ contract FundingVaultFactory{
 
         s_fundingVaultIdCounter++;
         uint256 fundingVaultId = s_fundingVaultIdCounter;
-        participationToken = IERC20(_participationToken);
+        proof-of-fundingToken = IERC20(_proof-of-fundingToken);
 
         FundingVault fundingVault = new FundingVault (
-        _participationToken,
-        _participationTokenAmount,  
+        _proof-of-fundingToken,
+        _proof-of-fundingTokenAmount,  
         _minFundingAmount,
         _timestamp,
         _exchangeRate,
@@ -114,7 +119,7 @@ contract FundingVaultFactory{
         _projectDescription
         );
 
-        participationToken.safeTransferFrom(msg.sender,address(fundingVault),_participationTokenAmount);
+        proof-of-fundingToken.safeTransferFrom(msg.sender,address(fundingVault),_proof-of-fundingTokenAmount);
 
         Vault storage vault = vaults[fundingVaultId];
         vault.vaultAddress = address(fundingVault);

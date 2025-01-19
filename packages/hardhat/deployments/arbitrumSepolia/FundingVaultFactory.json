@@ -1,0 +1,366 @@
+{
+  "address": "0xd15Ef3c325c22E1c43e2c9E071829A1D4dDD52Cf",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "FundingVaultFactory__CannotBeAZeroAddress",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "FundingVaultFactory__InvalidIndex",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "FundingVaultFactory__MinFundingAmountCanNotBeZero",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "FundingVaultFactory__deadlineCannotBeInThePast",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "FundingVault__TokenTransferFailed",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "fundingVault",
+          "type": "address"
+        }
+      ],
+      "name": "FundingVaultDeployed",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "recepient",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "TransferTokens",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_participationToken",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_participationTokenAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_minFundingAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_blockLimit",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_exchangeRate",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_withdrawlAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_developerFeeAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_developerFeePercentage",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "_projectURL",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_projectTitle",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_projectDescription",
+          "type": "string"
+        }
+      ],
+      "name": "deployFundingVault",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_fundingVaultId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getFundingVault",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getTotalNumberOfFundingVaults",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "start",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "end",
+          "type": "uint256"
+        }
+      ],
+      "name": "getVaults",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "vaultAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "title",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "description",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct FundingVaultFactory.Vault[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0xdc79d298ec48f0596f23c7ea2758e7332523708eda82d942993dda3693e8d3cc",
+  "receipt": {
+    "to": null,
+    "from": "0x1bAab7d90eceB510f9424a41A86D9eA5ADce8717",
+    "contractAddress": "0xd15Ef3c325c22E1c43e2c9E071829A1D4dDD52Cf",
+    "transactionIndex": 1,
+    "gasUsed": "2248755",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0x58b09dd8dda72848dc48f61ee3e76bbfc1b72ac85c4585aa1d71a6faa0cc6f04",
+    "transactionHash": "0xdc79d298ec48f0596f23c7ea2758e7332523708eda82d942993dda3693e8d3cc",
+    "logs": [],
+    "blockNumber": 94873276,
+    "cumulativeGasUsed": "2248755",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [],
+  "numDeployments": 1,
+  "solcInputHash": "30bae957920b1cf158dbac4d600e6715",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.20+commit.a1b79de6\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"FundingVaultFactory__CannotBeAZeroAddress\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"FundingVaultFactory__InvalidIndex\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"FundingVaultFactory__MinFundingAmountCanNotBeZero\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"FundingVaultFactory__deadlineCannotBeInThePast\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"FundingVault__TokenTransferFailed\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"fundingVault\",\"type\":\"address\"}],\"name\":\"FundingVaultDeployed\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"recepient\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"TransferTokens\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_participationToken\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_participationTokenAmount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_minFundingAmount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_blockLimit\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_exchangeRate\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"_withdrawlAddress\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_developerFeeAddress\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_developerFeePercentage\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"_projectURL\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"_projectTitle\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"_projectDescription\",\"type\":\"string\"}],\"name\":\"deployFundingVault\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_fundingVaultId\",\"type\":\"uint256\"}],\"name\":\"getFundingVault\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getTotalNumberOfFundingVaults\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"start\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"end\",\"type\":\"uint256\"}],\"name\":\"getVaults\",\"outputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"vaultAddress\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"title\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"description\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"deadline\",\"type\":\"uint256\"}],\"internalType\":\"struct FundingVaultFactory.Vault[]\",\"name\":\"\",\"type\":\"tuple[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"author\":\"Muhammad Zain Nasir\",\"kind\":\"dev\",\"methods\":{\"deployFundingVault(address,uint256,uint256,uint256,uint256,address,address,uint256,string,string,string)\":{\"params\":{\"_blockLimit\":\"The date (block height) limit until which withdrawal or after which refund is allowed.\",\"_developerFeeAddress\":\"the address for the developer fee\",\"_developerFeePercentage\":\"the percentage fee for the developer.\",\"_minFundingAmount\":\"The minimum amount required to make withdraw of funds possible\",\"_participationToken\":\"The token that will be used as participation token to incentivise donators\",\"_participationTokenAmount\":\"Theinitial  participation token amount which will be in fundingVault\",\"_projectURL\":\"A link or hash containing the project's information (e.g., GitHub repository).\",\"_withdrawlAddress\":\"The address for withdrawl of funds\"}},\"getVaults(uint256,uint256)\":{\"details\":\"to access the list of all the available funding vaults on the platform \"}},\"title\":\"FundingVaultFactory\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"getVaults(uint256,uint256)\":{\"notice\":\"Get list of all funding vaults\"}},\"notice\":\"This is the FundingVaultFactory contract that will be used for deployment and keeping track of all the funding vaults.\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/FundingVaultFactory.sol\":\"FundingVaultFactory\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts/token/ERC20/IERC20.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.1.0) (token/ERC20/IERC20.sol)\\n\\npragma solidity ^0.8.20;\\n\\n/**\\n * @dev Interface of the ERC-20 standard as defined in the ERC.\\n */\\ninterface IERC20 {\\n    /**\\n     * @dev Emitted when `value` tokens are moved from one account (`from`) to\\n     * another (`to`).\\n     *\\n     * Note that `value` may be zero.\\n     */\\n    event Transfer(address indexed from, address indexed to, uint256 value);\\n\\n    /**\\n     * @dev Emitted when the allowance of a `spender` for an `owner` is set by\\n     * a call to {approve}. `value` is the new allowance.\\n     */\\n    event Approval(address indexed owner, address indexed spender, uint256 value);\\n\\n    /**\\n     * @dev Returns the value of tokens in existence.\\n     */\\n    function totalSupply() external view returns (uint256);\\n\\n    /**\\n     * @dev Returns the value of tokens owned by `account`.\\n     */\\n    function balanceOf(address account) external view returns (uint256);\\n\\n    /**\\n     * @dev Moves a `value` amount of tokens from the caller's account to `to`.\\n     *\\n     * Returns a boolean value indicating whether the operation succeeded.\\n     *\\n     * Emits a {Transfer} event.\\n     */\\n    function transfer(address to, uint256 value) external returns (bool);\\n\\n    /**\\n     * @dev Returns the remaining number of tokens that `spender` will be\\n     * allowed to spend on behalf of `owner` through {transferFrom}. This is\\n     * zero by default.\\n     *\\n     * This value changes when {approve} or {transferFrom} are called.\\n     */\\n    function allowance(address owner, address spender) external view returns (uint256);\\n\\n    /**\\n     * @dev Sets a `value` amount of tokens as the allowance of `spender` over the\\n     * caller's tokens.\\n     *\\n     * Returns a boolean value indicating whether the operation succeeded.\\n     *\\n     * IMPORTANT: Beware that changing an allowance with this method brings the risk\\n     * that someone may use both the old and the new allowance by unfortunate\\n     * transaction ordering. One possible solution to mitigate this race\\n     * condition is to first reduce the spender's allowance to 0 and set the\\n     * desired value afterwards:\\n     * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729\\n     *\\n     * Emits an {Approval} event.\\n     */\\n    function approve(address spender, uint256 value) external returns (bool);\\n\\n    /**\\n     * @dev Moves a `value` amount of tokens from `from` to `to` using the\\n     * allowance mechanism. `value` is then deducted from the caller's\\n     * allowance.\\n     *\\n     * Returns a boolean value indicating whether the operation succeeded.\\n     *\\n     * Emits a {Transfer} event.\\n     */\\n    function transferFrom(address from, address to, uint256 value) external returns (bool);\\n}\\n\",\"keccak256\":\"0xe06a3f08a987af6ad2e1c1e774405d4fe08f1694b67517438b467cecf0da0ef7\",\"license\":\"MIT\"},\"contracts/FundingVault.sol\":{\"content\":\"\\n//SPDX-License-Identifier: MIT\\n\\n/**\\n * Layout of the contract\\n * version\\n * imports\\n * errors\\n * interfaces, libraries, and contracts\\n * type declarations\\n * state variables\\n * events\\n * modifiers\\n * functions\\n *\\n * layout of functions\\n * constructor\\n * receive function\\n * fallback function\\n * external functions\\n * public functions\\n * internal functions\\n * private functions\\n * view functions\\n * pure functions\\n * getters\\n */\\npragma solidity ^0.8.20;\\n\\nimport {IERC20} from \\\"@openzeppelin/contracts/token/ERC20/IERC20.sol\\\";\\n\\n/**\\n * @title FundingVault\\n * @author Muhammad Zain Nasir\\n * @notice  A contract that allows users to deposit funds and receive participation tokens in return box creator can call WithdrawFunds if there enough funds collected\\n */\\ncontract FundingVault{\\n\\n // Errors //\\n    error FundingVault__AmountCannotBeZero(); //\\n    error FundingVault__minFundingAmountReached();\\n    error FundingVault__minFundingAmountNotReached();\\n    error FundingVault__deadlineNotPassed(); //\\n    error FundingVault__deadlinePassed(); \\n    error FundingVault__NotEnoughTokens(); //\\n    error FundingVault__noTokenBalance();\\n    error FundingVault__fundsWithdrawn();\\n    error FundingVault__TokenTransferFailed();\\n    error FundingVault__EthTransferFailed();\\n    error FundingVault__EthTransferToDeveloperFailed();\\n    error FundingVault__EthTransferToWithdrawlFailed();\\n\\n\\n    // State Variables //\\n    IERC20 private immutable participationToken;\\n    uint256 private participationTokenAmount;\\n    uint256 private blockLimit;\\n    uint256 private minFundingAmount; //The minimum amount of ETH required in the contract to enable withdrawal.\\n    uint256 private exchangeRate; //The exchange rate of ERG per token\\n    address private projectOwner;\\n    address private withdrawlAddress;\\n    address private developerFeeAddress; //develper address\\n    uint256 private developerFeePercentage; \\n    string  private projectURL;\\n    string private projectTitle;\\n    string private projectDescription;\\n    bool private fundsWithdrawn;\\n\\n\\n    /** \\n    * @dev A vault is represented as a struct  \\n    */ \\n\\n    struct Vault{\\n        address withdrawlAddress;\\n        address participationToken;\\n        uint256 participationTokenAmount;  \\n        uint256 minFundingAmount;\\n        uint256 blockLimit;\\n        uint256 exchangeRate;\\n        string projectURL;\\n        string projectTitle;\\n        string projectDescription;\\n    }\\n    \\n\\n\\n    // Events //\\n    event TokensPurchased(address indexed from, uint256 indexed amount);\\n    event Refund(address indexed user, uint256 indexed amount);\\n    event FundsWithdrawn(address indexed user, uint256 amount);\\n\\n\\n\\n    modifier deadlinePassed() {\\n        if (block.number < blockLimit) {\\n            revert FundingVault__deadlineNotPassed();\\n        }\\n        _;\\n    }\\n    modifier deadlineNotPassed() {\\n        if (block.number > blockLimit) {\\n            revert FundingVault__deadlinePassed();\\n        }\\n        _;\\n    }\\n\\n\\n    // Functions //\\n\\n     /**\\n     * @param _participationToken The token that will be used as participation token to incentivise donators\\n     * @param _participationTokenAmount Theinitial  participation token amount which will be in fundingVault\\n     * @param _minFundingAmount The minimum amount required to make withdraw of funds possible\\n     * @param _blockLimit The date (block height) limit until which withdrawal or after which refund is allowed.\\n     * @param _withdrawlAddress The address for withdrawl of funds\\n     * @param _developerFeeAddress the address for the developer fee\\n     * @param _developerFeePercentage the percentage fee for the developer.\\n     * @param _projectURL A link or hash containing the project's information (e.g., GitHub repository).\\n     */\\n    \\n     constructor(\\n        address _participationToken,\\n        uint256 _participationTokenAmount,  \\n        uint256 _minFundingAmount,\\n        uint256 _blockLimit,\\n        uint256 _exchangeRate,\\n        address _withdrawlAddress,\\n        address _developerFeeAddress, \\n        uint256 _developerFeePercentage, \\n        string memory _projectURL,\\n        string memory _projectTitle,\\n        string memory _projectDescription\\n    ) {\\n        \\n        participationToken  = IERC20(_participationToken);\\n        participationTokenAmount  = _participationTokenAmount ;\\n        minFundingAmount = _minFundingAmount;\\n        blockLimit = _blockLimit;\\n        exchangeRate = _exchangeRate;\\n        withdrawlAddress = _withdrawlAddress;\\n        developerFeeAddress =  _developerFeeAddress;\\n        developerFeePercentage = _developerFeePercentage;\\n        projectURL = _projectURL;\\n        projectTitle = _projectTitle;\\n        projectDescription = _projectDescription;\\n    }\\n\\n    \\n    /**\\n     * @dev Allows users to deposit Ether and purchase participation tokens based on exchange rate\\n     */\\n    function purchaseTokens() external payable {\\n        if (msg.value == 0){\\n            revert FundingVault__AmountCannotBeZero();\\n        }\\n\\n        \\n        uint256 tokenAmount = msg.value * exchangeRate;\\n\\n        if (participationToken.balanceOf(address(this)) < tokenAmount)\\n        {\\n            revert FundingVault__NotEnoughTokens();\\n        }\\n\\n        \\n        bool tokenTransferSuccess = participationToken.transfer(msg.sender, tokenAmount);\\n        if (!tokenTransferSuccess){\\n            revert FundingVault__TokenTransferFailed();\\n        }\\n        \\n        emit TokensPurchased(msg.sender, tokenAmount);\\n    }\\n\\n    /**\\n     * @dev Allows users to exchange tokens for Eth (at exchange rate) if and only if the deadline has passed and the minimum number of tokens has not been sold.\\n     */\\n\\n    function refundTokens() external payable deadlineNotPassed{\\n\\n        if(address(this).balance >= minFundingAmount){\\n        revert FundingVault__minFundingAmountReached();\\n        }\\n        uint tokensHeld = participationToken.balanceOf(msg.sender);\\n        if (tokensHeld == 0){\\n        revert FundingVault__noTokenBalance();\\n        }\\n\\n        uint256 refundAmount = tokensHeld * exchangeRate;\\n\\n       \\n        bool tokenTransferSuccess = participationToken.transferFrom(msg.sender, address(this), tokensHeld);\\n        if (!tokenTransferSuccess){\\n            revert FundingVault__TokenTransferFailed();\\n        }\\n       \\n        (bool ethTransferSuccess, ) = payable(msg.sender).call{value: refundAmount}(\\\"\\\");\\n        if (!ethTransferSuccess){\\n            revert FundingVault__EthTransferFailed();\\n        }\\n        \\n        emit Refund(msg.sender, refundAmount);       \\n    }\\n\\n    /**\\n     * @dev Allows Project owners to withdraw Eth if and only if the minimum number of tokens has been sold.\\n     \\n     */\\n\\n    function withdrawFunds() external {\\n        uint256 fundsCollected = address(this).balance;\\n        \\n        if(fundsCollected < minFundingAmount){\\n            revert FundingVault__minFundingAmountNotReached();\\n        }\\n        \\n        if(fundsWithdrawn == true){\\n            revert FundingVault__fundsWithdrawn();\\n        }\\n        \\n        uint256 developerFee = (fundsCollected * developerFeePercentage) / 100;\\n        uint256 amountToWithdraw = fundsCollected - developerFee;\\n\\n        (bool successA, ) = payable(developerFeeAddress).call{value: developerFee}(\\\"\\\");\\n        if (!successA){\\n            revert FundingVault__EthTransferToDeveloperFailed();\\n        }\\n        (bool successB, ) = payable(withdrawlAddress).call{value: amountToWithdraw}(\\\"\\\");\\n        if (!successB){\\n            revert FundingVault__EthTransferToWithdrawlFailed();\\n        }\\n        fundsWithdrawn = true;\\n        emit FundsWithdrawn(msg.sender, amountToWithdraw);\\n    }\\n\\n    /**\\n     * @dev Allows Project owners to withdraw unsold tokens from the contract at any time.\\n     * @param UnsoldTokenAmount amount to withdraw\\n    */\\n\\n     function withdrawUnsoldTokens(uint256 UnsoldTokenAmount) external  {\\n        uint tokensHeld = participationToken.balanceOf(address(this));\\n        if (tokensHeld < UnsoldTokenAmount){\\n            revert FundingVault__NotEnoughTokens();\\n        }\\n        bool tokenTransferSuccess = participationToken.transferFrom(address(this), withdrawlAddress, UnsoldTokenAmount);\\n        if (!tokenTransferSuccess){\\n            revert FundingVault__TokenTransferFailed();\\n        }\\n       \\n     }\\n\\n     /**\\n     * @dev Allows Project owners to  add more tokens to the contract at any time.\\n     * @param additionalTokens amount to add\\n    */\\n    function addTokens(uint256 additionalTokens) external {\\n        bool tokenTransferSuccess = participationToken.transferFrom(msg.sender, address(this), additionalTokens);\\n        if (!tokenTransferSuccess){\\n            revert FundingVault__TokenTransferFailed();\\n        }\\n    }\\n\\n    /**\\n     * @notice Get funding vault details\\n     * @dev to access all neccassary parameters of the funding vault\\n     */ \\n    function getVaults() external view returns(Vault memory)\\n    {\\n        Vault memory VaultDetails;\\n        VaultDetails.withdrawlAddress = withdrawlAddress;\\n        VaultDetails.participationToken  = address(participationToken);\\n        VaultDetails.participationTokenAmount  = participationTokenAmount ;\\n        VaultDetails.minFundingAmount = minFundingAmount;\\n        VaultDetails.blockLimit = blockLimit;\\n        VaultDetails.exchangeRate = exchangeRate;\\n        VaultDetails.projectURL = projectURL;\\n        VaultDetails.projectTitle = projectTitle;\\n        VaultDetails.projectDescription = projectDescription;\\n        return VaultDetails;\\n    }\\n\\n}\",\"keccak256\":\"0x9625c50911835201535c170914b7c7a21d83098b8d3d9817f703e92e60d6354f\",\"license\":\"MIT\"},\"contracts/FundingVaultFactory.sol\":{\"content\":\"// SPDX-License-Identifier: UNLICENSED\\n\\n\\n/**\\n * Layout of the contract\\n * version\\n * imports\\n * errors\\n * interfaces, libraries, and contracts\\n * type declarations\\n * state variables\\n * events\\n * modifiers\\n * functions\\n *\\n * layout of functions\\n * external functions\\n * public functions\\n * internal functions\\n * private functions\\n * view functions\\n * pure functions\\n * getters\\n */\\n\\npragma solidity ^0.8.20;\\n\\nimport {FundingVault} from \\\"./FundingVault.sol\\\";\\nimport {IERC20} from \\\"@openzeppelin/contracts/token/ERC20/IERC20.sol\\\";\\n\\n/**\\n * @title FundingVaultFactory\\n * @author Muhammad Zain Nasir\\n * @notice This is the FundingVaultFactory contract that will be used for deployment and keeping track of all the funding vaults.\\n */\\ncontract FundingVaultFactory{\\n    // Errors //\\n    error FundingVaultFactory__CannotBeAZeroAddress();\\n    error FundingVaultFactory__deadlineCannotBeInThePast();\\n    error FundingVaultFactory__MinFundingAmountCanNotBeZero();\\n    error FundingVault__TokenTransferFailed();\\n    error FundingVaultFactory__InvalidIndex();\\n\\n    struct Vault{\\n        address vaultAddress;\\n        string title;\\n        string description;\\n        uint256 deadline;\\n    }\\n\\n\\n    // State Variables //\\n    mapping(uint256 => Vault) private vaults;\\n\\n    IERC20 private participationToken;\\n    uint256 private s_fundingVaultIdCounter;\\n\\n    \\n\\n\\n\\n    // Events //\\n    event FundingVaultDeployed(address indexed fundingVault);\\n    event TransferTokens(address indexed token, address indexed recepient, uint256 amount);\\n\\n    // Functions //\\n\\n    /**\\n     * @param _participationToken The token that will be used as participation token to incentivise donators\\n     * @param _participationTokenAmount Theinitial  participation token amount which will be in fundingVault\\n     * @param _minFundingAmount The minimum amount required to make withdraw of funds possible\\n     * @param _blockLimit The date (block height) limit until which withdrawal or after which refund is allowed.\\n     * @param _withdrawlAddress The address for withdrawl of funds\\n     * @param _developerFeeAddress the address for the developer fee\\n     * @param _developerFeePercentage the percentage fee for the developer.\\n     * @param _projectURL A link or hash containing the project's information (e.g., GitHub repository).\\n     */\\n    function deployFundingVault(\\n        address _participationToken,\\n        uint256 _participationTokenAmount,  \\n        uint256 _minFundingAmount,\\n        uint256 _blockLimit,\\n        uint256 _exchangeRate,\\n        address _withdrawlAddress,\\n        address _developerFeeAddress, \\n        uint256 _developerFeePercentage, \\n        string memory _projectURL,\\n        string memory _projectTitle,\\n        string memory _projectDescription\\n    ) external returns (address) {\\n        if (_participationToken == address(0) || _withdrawlAddress == address(0) || _developerFeeAddress == address(0)){\\n            revert FundingVaultFactory__CannotBeAZeroAddress();\\n        }\\n        if (block.number > _blockLimit) {\\n            revert FundingVaultFactory__deadlineCannotBeInThePast();\\n        }\\n        if (_minFundingAmount == 0) {\\n            revert FundingVaultFactory__MinFundingAmountCanNotBeZero();\\n        }\\n\\n\\n\\n        s_fundingVaultIdCounter++;\\n        uint256 fundingVaultId = s_fundingVaultIdCounter;\\n        participationToken = IERC20(_participationToken);\\n\\n        FundingVault fundingVault = new FundingVault(\\n        _participationToken,\\n        _participationTokenAmount,  \\n        _minFundingAmount,\\n        _blockLimit,\\n        _exchangeRate,\\n        _withdrawlAddress,\\n        _developerFeeAddress, \\n        _developerFeePercentage, \\n        _projectURL,\\n        _projectTitle,\\n        _projectDescription\\n        );\\n\\n        \\n        transferParticipationTokens(msg.sender, address(fundingVault), _participationTokenAmount);\\n\\n        Vault storage vault = vaults[fundingVaultId];\\n        vault.vaultAddress = address(fundingVault);\\n        vault.title = _projectTitle;\\n        vault.description = _projectDescription;\\n        vault.deadline = _blockLimit;\\n        \\n        emit FundingVaultDeployed(address(fundingVault));     \\n        return address(fundingVault);\\n    }\\n\\n     /**\\n     * @notice Get list of all funding vaults\\n     * @dev to access the list of all the available funding vaults on the platform \\n     */ \\n    function getVaults(uint256 start, uint256 end) external view returns(Vault[] memory)\\n    {\\n        if(end > s_fundingVaultIdCounter || start > end || start == 0)\\n        {\\n            revert FundingVaultFactory__InvalidIndex();\\n        }\\n        Vault[] memory allVaults = new Vault[](end - start + 1);\\n\\n        for(uint i = start; i <= end;i++)\\n        {\\n            allVaults[i - start] = vaults[i];\\n        }\\n        return allVaults;\\n    }\\n\\n    function transferParticipationTokens(address from, address to, uint256 amount) private{\\n        bool tokenTransferSuccess = participationToken.transferFrom(from, to, amount);\\n        if (!tokenTransferSuccess){\\n            revert FundingVault__TokenTransferFailed();\\n        }\\n    }\\n\\n\\n    // Getters //\\n    function getFundingVault(uint256 _fundingVaultId) external view returns (address) {\\n        return vaults[_fundingVaultId].vaultAddress;\\n    }\\n\\n    function getTotalNumberOfFundingVaults() external view returns (uint256) {\\n        return s_fundingVaultIdCounter;\\n    }\\n}\",\"keccak256\":\"0x2d359095e17615b305cd2fe91ee0eadf3a123712f175e70da80715819ae01655\",\"license\":\"UNLICENSED\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b50611dd5806100206000396000f3fe60806040523480156200001157600080fd5b5060043610620000525760003560e01c80639249b2ab1462000057578063a0671d90146200008b578063b98cca3714620000b7578063f24552be14620000dd575b600080fd5b6200006e62000068366004620006d9565b620000ef565b6040516001600160a01b0390911681526020015b60405180910390f35b6200006e6200009c366004620007de565b6000908152602081905260409020546001600160a01b031690565b620000ce620000c8366004620007f8565b620002be565b60405162000082919062000863565b60025460405190815260200162000082565b60006001600160a01b038c1615806200010f57506001600160a01b038716155b806200012257506001600160a01b038616155b156200014157604051636413ca5b60e11b815260040160405180910390fd5b88431115620001635760405163c25fb0d560e01b815260040160405180910390fd5b8960000362000185576040516377a4d60160e01b815260040160405180910390fd5b60028054906000620001978362000926565b9190505550600060025490508c600160006101000a8154816001600160a01b0302191690836001600160a01b0316021790555060008d8d8d8d8d8d8d8d8d8d8d604051620001e59062000603565b620001fb9b9a9998979695949392919062000942565b604051809103906000f08015801562000218573d6000803e3d6000fd5b5090506200022833828f62000559565b600082815260208190526040902080546001600160a01b0319166001600160a01b038316178155600181016200025f878262000a66565b506002810162000270868262000a66565b50600381018c90556040516001600160a01b038316907f88890f101e05f842f970e80a57886fda0f59e782dfe4c9c65bd7ae6c5b1ce97590600090a2509d9c50505050505050505050505050565b6060600254821180620002d057508183115b80620002da575082155b15620002f957604051637e49171760e11b815260040160405180910390fd5b600062000307848462000b33565b6200031490600162000b49565b67ffffffffffffffff8111156200032f576200032f6200062e565b6040519080825280602002602001820160405280156200039757816020015b62000383604051806080016040528060006001600160a01b031681526020016060815260200160608152602001600081525090565b8152602001906001900390816200034e5790505b509050835b8381116200054f576000818152602081815260409182902082516080810190935280546001600160a01b031683526001810180549192840191620003e090620009d7565b80601f01602080910402602001604051908101604052809291908181526020018280546200040e90620009d7565b80156200045f5780601f1062000433576101008083540402835291602001916200045f565b820191906000526020600020905b8154815290600101906020018083116200044157829003601f168201915b505050505081526020016002820180546200047a90620009d7565b80601f0160208091040260200160405190810160405280929190818152602001828054620004a890620009d7565b8015620004f95780601f10620004cd57610100808354040283529160200191620004f9565b820191906000526020600020905b815481529060010190602001808311620004db57829003601f168201915b505050505081526020016003820154815250508286836200051b919062000b33565b815181106200052e576200052e62000b5f565b60200260200101819052508080620005469062000926565b9150506200039c565b5090505b92915050565b6001546040516323b872dd60e01b81526001600160a01b03858116600483015284811660248301526044820184905260009216906323b872dd906064016020604051808303816000875af1158015620005b6573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190620005dc919062000b75565b905080620005fd576040516312f6b88560e31b815260040160405180910390fd5b50505050565b6111ff8062000ba183390190565b80356001600160a01b03811681146200062957600080fd5b919050565b634e487b7160e01b600052604160045260246000fd5b600082601f8301126200065657600080fd5b813567ffffffffffffffff808211156200067457620006746200062e565b604051601f8301601f19908116603f011681019082821181831017156200069f576200069f6200062e565b81604052838152866020858801011115620006b957600080fd5b836020870160208301376000602085830101528094505050505092915050565b60008060008060008060008060008060006101608c8e031215620006fc57600080fd5b620007078c62000611565b9a5060208c0135995060408c0135985060608c0135975060808c013596506200073360a08d0162000611565b95506200074360c08d0162000611565b945060e08c0135935067ffffffffffffffff806101008e013511156200076857600080fd5b6200077b8e6101008f01358f0162000644565b9350806101208e013511156200079057600080fd5b620007a38e6101208f01358f0162000644565b9250806101408e01351115620007b857600080fd5b50620007cc8d6101408e01358e0162000644565b90509295989b509295989b9093969950565b600060208284031215620007f157600080fd5b5035919050565b600080604083850312156200080c57600080fd5b50508035926020909101359150565b6000815180845260005b81811015620008435760208185018101518683018201520162000825565b506000602082860101526020601f19601f83011685010191505092915050565b60006020808301818452808551808352604092508286019150828160051b87010184880160005b838110156200090257888303603f19018552815180516001600160a01b0316845287810151608089860181905290620008c6828701826200081b565b9150508782015185820389870152620008e082826200081b565b606093840151969093019590955250948701949250908601906001016200088a565b509098975050505050505050565b634e487b7160e01b600052601160045260246000fd5b6000600182016200093b576200093b62000910565b5060010190565b600061016060018060a01b03808f1684528d60208501528c60408501528b60608501528a6080850152808a1660a085015280891660c0850152508660e08401528061010084015262000997818401876200081b565b9050828103610120840152620009ae81866200081b565b9050828103610140840152620009c581856200081b565b9e9d5050505050505050505050505050565b600181811c90821680620009ec57607f821691505b60208210810362000a0d57634e487b7160e01b600052602260045260246000fd5b50919050565b601f82111562000a6157600081815260208120601f850160051c8101602086101562000a3c5750805b601f850160051c820191505b8181101562000a5d5782815560010162000a48565b5050505b505050565b815167ffffffffffffffff81111562000a835762000a836200062e565b62000a9b8162000a948454620009d7565b8462000a13565b602080601f83116001811462000ad3576000841562000aba5750858301515b600019600386901b1c1916600185901b17855562000a5d565b600085815260208120601f198616915b8281101562000b045788860151825594840194600190910190840162000ae3565b508582101562000b235787850151600019600388901b60f8161c191681555b5050505050600190811b01905550565b8181038181111562000553576200055362000910565b8082018082111562000553576200055362000910565b634e487b7160e01b600052603260045260246000fd5b60006020828403121562000b8857600080fd5b8151801515811462000b9957600080fd5b939250505056fe60a06040523480156200001157600080fd5b50604051620011ff380380620011ff8339810160408190526200003491620001a2565b6001600160a01b038b811660805260008b905560028a905560018990556003889055600580546001600160a01b03199081168984161790915560068054909116918716919091179055600784905560086200009084826200033d565b5060096200009f83826200033d565b50600a620000ae82826200033d565b50505050505050505050505062000409565b80516001600160a01b0381168114620000d857600080fd5b919050565b634e487b7160e01b600052604160045260246000fd5b600082601f8301126200010557600080fd5b81516001600160401b0380821115620001225762000122620000dd565b604051601f8301601f19908116603f011681019082821181831017156200014d576200014d620000dd565b816040528381526020925086838588010111156200016a57600080fd5b600091505b838210156200018e57858201830151818301840152908201906200016f565b600093810190920192909252949350505050565b60008060008060008060008060008060006101608c8e031215620001c557600080fd5b620001d08c620000c0565b9a5060208c0151995060408c0151985060608c0151975060808c01519650620001fc60a08d01620000c0565b95506200020c60c08d01620000c0565b60e08d01516101008e015191965094506001600160401b038111156200023157600080fd5b6200023f8e828f01620000f3565b6101208e015190945090506001600160401b038111156200025f57600080fd5b6200026d8e828f01620000f3565b6101408e015190935090506001600160401b038111156200028d57600080fd5b6200029b8e828f01620000f3565b9150509295989b509295989b9093969950565b600181811c90821680620002c357607f821691505b602082108103620002e457634e487b7160e01b600052602260045260246000fd5b50919050565b601f8211156200033857600081815260208120601f850160051c81016020861015620003135750805b601f850160051c820191505b8181101562000334578281556001016200031f565b5050505b505050565b81516001600160401b03811115620003595762000359620000dd565b62000371816200036a8454620002ae565b84620002ea565b602080601f831160018114620003a95760008415620003905750858301515b600019600386901b1c1916600185901b17855562000334565b600085815260208120601f198616915b82811015620003da57888601518255948401946001909101908401620003b9565b5085821015620003f95787850151600019600388901b60f8161c191681555b5050505050600190811b01905550565b608051610da962000456600039600081816102f30152818161039c015281816104840152818161069d01528181610765015281816108540152818161092a0152610a780152610da96000f3fe6080604052600436106100555760003560e01c806324600fc31461005a5780633290ce291461007157806344d00f821461007957806345f085a6146100a457806371007509146100c4578063c6ed8990146100cc575b600080fd5b34801561006657600080fd5b5061006f6100ec565b005b61006f6102a0565b34801561008557600080fd5b5061008e610462565b60405161009b9190610bb5565b60405180910390f35b3480156100b057600080fd5b5061006f6100bf366004610c76565b610685565b61006f6107f7565b3480156100d857600080fd5b5061006f6100e7366004610c76565b610a53565b600254479081101561011157604051635fd8526960e11b815260040160405180910390fd5b600b5460ff1615156001036101395760405163624a022f60e11b815260040160405180910390fd5b600060646007548361014b9190610ca5565b6101559190610cc2565b905060006101638284610ce4565b6006546040519192506000916001600160a01b039091169084908381818185875af1925050503d80600081146101b5576040519150601f19603f3d011682016040523d82523d6000602084013e6101ba565b606091505b50509050806101dc576040516320afa21360e11b815260040160405180910390fd5b6005546040516000916001600160a01b03169084908381818185875af1925050503d8060008114610229576040519150601f19603f3d011682016040523d82523d6000602084013e61022e565b606091505b50509050806102505760405163cb207dd160e01b815260040160405180910390fd5b600b805460ff1916600117905560405133907feaff4b37086828766ad3268786972c0cd24259d4c87a80f9d3963a3c3d999b0d906102919086815260200190565b60405180910390a25050505050565b346000036102c157604051632c7e767360e11b815260040160405180910390fd5b6000600354346102d19190610ca5565b6040516370a0823160e01b815230600482015290915081906001600160a01b037f000000000000000000000000000000000000000000000000000000000000000016906370a0823190602401602060405180830381865afa15801561033a573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061035e9190610cf7565b101561037d576040516329b2cd9760e11b815260040160405180910390fd5b60405163a9059cbb60e01b8152336004820152602481018290526000907f00000000000000000000000000000000000000000000000000000000000000006001600160a01b03169063a9059cbb906044016020604051808303816000875af11580156103ed573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906104119190610d10565b905080610431576040516312f6b88560e31b815260040160405180910390fd5b604051829033907f8f28852646c20cc973d3a8218f7eefed58c25c909f78f0265af4818c3d4dc27190600090a35050565b61046a610b11565b610472610b11565b6005546001600160a01b0390811682527f000000000000000000000000000000000000000000000000000000000000000016602082015260005460408201526002546060820152600154608082015260035460a0820152600880546104d690610d39565b80601f016020809104026020016040519081016040528092919081815260200182805461050290610d39565b801561054f5780601f106105245761010080835404028352916020019161054f565b820191906000526020600020905b81548152906001019060200180831161053257829003601f168201915b50505050508160c001819052506009805461056990610d39565b80601f016020809104026020016040519081016040528092919081815260200182805461059590610d39565b80156105e25780601f106105b7576101008083540402835291602001916105e2565b820191906000526020600020905b8154815290600101906020018083116105c557829003601f168201915b50505050508160e00181905250600a80546105fc90610d39565b80601f016020809104026020016040519081016040528092919081815260200182805461062890610d39565b80156106755780601f1061064a57610100808354040283529160200191610675565b820191906000526020600020905b81548152906001019060200180831161065857829003601f168201915b5050505050610100820152919050565b6040516370a0823160e01b81523060048201526000907f00000000000000000000000000000000000000000000000000000000000000006001600160a01b0316906370a0823190602401602060405180830381865afa1580156106ec573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906107109190610cf7565b905081811015610733576040516329b2cd9760e11b815260040160405180910390fd5b6005546040516323b872dd60e01b81523060048201526001600160a01b039182166024820152604481018490526000917f000000000000000000000000000000000000000000000000000000000000000016906323b872dd906064016020604051808303816000875af11580156107ae573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906107d29190610d10565b9050806107f2576040516312f6b88560e31b815260040160405180910390fd5b505050565b60015443111561081a57604051637318647f60e01b815260040160405180910390fd5b600254471061083c5760405163184953bd60e31b815260040160405180910390fd5b6040516370a0823160e01b81523360048201526000907f00000000000000000000000000000000000000000000000000000000000000006001600160a01b0316906370a0823190602401602060405180830381865afa1580156108a3573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906108c79190610cf7565b9050806000036108ea576040516324cf07b960e11b815260040160405180910390fd5b6000600354826108fa9190610ca5565b6040516323b872dd60e01b8152336004820152306024820152604481018490529091506000906001600160a01b037f000000000000000000000000000000000000000000000000000000000000000016906323b872dd906064016020604051808303816000875af1158015610973573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906109979190610d10565b9050806109b7576040516312f6b88560e31b815260040160405180910390fd5b604051600090339084908381818185875af1925050503d80600081146109f9576040519150601f19603f3d011682016040523d82523d6000602084013e6109fe565b606091505b5050905080610a20576040516358bb49bb60e01b815260040160405180910390fd5b604051839033907fbb28353e4598c3b9199101a66e0989549b659a59a54d2c27fbb183f1932c8e6d90600090a350505050565b6040516323b872dd60e01b8152336004820152306024820152604481018290526000907f00000000000000000000000000000000000000000000000000000000000000006001600160a01b0316906323b872dd906064016020604051808303816000875af1158015610ac9573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610aed9190610d10565b905080610b0d576040516312f6b88560e31b815260040160405180910390fd5b5050565b60405180610120016040528060006001600160a01b0316815260200160006001600160a01b03168152602001600081526020016000815260200160008152602001600081526020016060815260200160608152602001606081525090565b6000815180845260005b81811015610b9557602081850181015186830182015201610b79565b506000602082860101526020601f19601f83011685010191505092915050565b60208152610bcf6020820183516001600160a01b03169052565b60006020830151610beb60408401826001600160a01b03169052565b506040830151606083015260608301516080830152608083015160a083015260a083015160c083015260c08301516101208060e0850152610c30610140850183610b6f565b915060e0850151601f19610100818786030181880152610c508584610b6f565b908801518782039092018488015293509050610c6c8382610b6f565b9695505050505050565b600060208284031215610c8857600080fd5b5035919050565b634e487b7160e01b600052601160045260246000fd5b8082028115828204841417610cbc57610cbc610c8f565b92915050565b600082610cdf57634e487b7160e01b600052601260045260246000fd5b500490565b81810381811115610cbc57610cbc610c8f565b600060208284031215610d0957600080fd5b5051919050565b600060208284031215610d2257600080fd5b81518015158114610d3257600080fd5b9392505050565b600181811c90821680610d4d57607f821691505b602082108103610d6d57634e487b7160e01b600052602260045260246000fd5b5091905056fea2646970667358221220f7742b84be584ef3d6e440da9a186b390f6269d680dc0cb09c21140148cc575764736f6c63430008140033a26469706673582212206fe038b0fd4f086d0e65494888fe5bced0466f0a04f29b63d4684f3b3f71b48964736f6c63430008140033",
+  "deployedBytecode": "0x60806040523480156200001157600080fd5b5060043610620000525760003560e01c80639249b2ab1462000057578063a0671d90146200008b578063b98cca3714620000b7578063f24552be14620000dd575b600080fd5b6200006e62000068366004620006d9565b620000ef565b6040516001600160a01b0390911681526020015b60405180910390f35b6200006e6200009c366004620007de565b6000908152602081905260409020546001600160a01b031690565b620000ce620000c8366004620007f8565b620002be565b60405162000082919062000863565b60025460405190815260200162000082565b60006001600160a01b038c1615806200010f57506001600160a01b038716155b806200012257506001600160a01b038616155b156200014157604051636413ca5b60e11b815260040160405180910390fd5b88431115620001635760405163c25fb0d560e01b815260040160405180910390fd5b8960000362000185576040516377a4d60160e01b815260040160405180910390fd5b60028054906000620001978362000926565b9190505550600060025490508c600160006101000a8154816001600160a01b0302191690836001600160a01b0316021790555060008d8d8d8d8d8d8d8d8d8d8d604051620001e59062000603565b620001fb9b9a9998979695949392919062000942565b604051809103906000f08015801562000218573d6000803e3d6000fd5b5090506200022833828f62000559565b600082815260208190526040902080546001600160a01b0319166001600160a01b038316178155600181016200025f878262000a66565b506002810162000270868262000a66565b50600381018c90556040516001600160a01b038316907f88890f101e05f842f970e80a57886fda0f59e782dfe4c9c65bd7ae6c5b1ce97590600090a2509d9c50505050505050505050505050565b6060600254821180620002d057508183115b80620002da575082155b15620002f957604051637e49171760e11b815260040160405180910390fd5b600062000307848462000b33565b6200031490600162000b49565b67ffffffffffffffff8111156200032f576200032f6200062e565b6040519080825280602002602001820160405280156200039757816020015b62000383604051806080016040528060006001600160a01b031681526020016060815260200160608152602001600081525090565b8152602001906001900390816200034e5790505b509050835b8381116200054f576000818152602081815260409182902082516080810190935280546001600160a01b031683526001810180549192840191620003e090620009d7565b80601f01602080910402602001604051908101604052809291908181526020018280546200040e90620009d7565b80156200045f5780601f1062000433576101008083540402835291602001916200045f565b820191906000526020600020905b8154815290600101906020018083116200044157829003601f168201915b505050505081526020016002820180546200047a90620009d7565b80601f0160208091040260200160405190810160405280929190818152602001828054620004a890620009d7565b8015620004f95780601f10620004cd57610100808354040283529160200191620004f9565b820191906000526020600020905b815481529060010190602001808311620004db57829003601f168201915b505050505081526020016003820154815250508286836200051b919062000b33565b815181106200052e576200052e62000b5f565b60200260200101819052508080620005469062000926565b9150506200039c565b5090505b92915050565b6001546040516323b872dd60e01b81526001600160a01b03858116600483015284811660248301526044820184905260009216906323b872dd906064016020604051808303816000875af1158015620005b6573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190620005dc919062000b75565b905080620005fd576040516312f6b88560e31b815260040160405180910390fd5b50505050565b6111ff8062000ba183390190565b80356001600160a01b03811681146200062957600080fd5b919050565b634e487b7160e01b600052604160045260246000fd5b600082601f8301126200065657600080fd5b813567ffffffffffffffff808211156200067457620006746200062e565b604051601f8301601f19908116603f011681019082821181831017156200069f576200069f6200062e565b81604052838152866020858801011115620006b957600080fd5b836020870160208301376000602085830101528094505050505092915050565b60008060008060008060008060008060006101608c8e031215620006fc57600080fd5b620007078c62000611565b9a5060208c0135995060408c0135985060608c0135975060808c013596506200073360a08d0162000611565b95506200074360c08d0162000611565b945060e08c0135935067ffffffffffffffff806101008e013511156200076857600080fd5b6200077b8e6101008f01358f0162000644565b9350806101208e013511156200079057600080fd5b620007a38e6101208f01358f0162000644565b9250806101408e01351115620007b857600080fd5b50620007cc8d6101408e01358e0162000644565b90509295989b509295989b9093969950565b600060208284031215620007f157600080fd5b5035919050565b600080604083850312156200080c57600080fd5b50508035926020909101359150565b6000815180845260005b81811015620008435760208185018101518683018201520162000825565b506000602082860101526020601f19601f83011685010191505092915050565b60006020808301818452808551808352604092508286019150828160051b87010184880160005b838110156200090257888303603f19018552815180516001600160a01b0316845287810151608089860181905290620008c6828701826200081b565b9150508782015185820389870152620008e082826200081b565b606093840151969093019590955250948701949250908601906001016200088a565b509098975050505050505050565b634e487b7160e01b600052601160045260246000fd5b6000600182016200093b576200093b62000910565b5060010190565b600061016060018060a01b03808f1684528d60208501528c60408501528b60608501528a6080850152808a1660a085015280891660c0850152508660e08401528061010084015262000997818401876200081b565b9050828103610120840152620009ae81866200081b565b9050828103610140840152620009c581856200081b565b9e9d5050505050505050505050505050565b600181811c90821680620009ec57607f821691505b60208210810362000a0d57634e487b7160e01b600052602260045260246000fd5b50919050565b601f82111562000a6157600081815260208120601f850160051c8101602086101562000a3c5750805b601f850160051c820191505b8181101562000a5d5782815560010162000a48565b5050505b505050565b815167ffffffffffffffff81111562000a835762000a836200062e565b62000a9b8162000a948454620009d7565b8462000a13565b602080601f83116001811462000ad3576000841562000aba5750858301515b600019600386901b1c1916600185901b17855562000a5d565b600085815260208120601f198616915b8281101562000b045788860151825594840194600190910190840162000ae3565b508582101562000b235787850151600019600388901b60f8161c191681555b5050505050600190811b01905550565b8181038181111562000553576200055362000910565b8082018082111562000553576200055362000910565b634e487b7160e01b600052603260045260246000fd5b60006020828403121562000b8857600080fd5b8151801515811462000b9957600080fd5b939250505056fe60a06040523480156200001157600080fd5b50604051620011ff380380620011ff8339810160408190526200003491620001a2565b6001600160a01b038b811660805260008b905560028a905560018990556003889055600580546001600160a01b03199081168984161790915560068054909116918716919091179055600784905560086200009084826200033d565b5060096200009f83826200033d565b50600a620000ae82826200033d565b50505050505050505050505062000409565b80516001600160a01b0381168114620000d857600080fd5b919050565b634e487b7160e01b600052604160045260246000fd5b600082601f8301126200010557600080fd5b81516001600160401b0380821115620001225762000122620000dd565b604051601f8301601f19908116603f011681019082821181831017156200014d576200014d620000dd565b816040528381526020925086838588010111156200016a57600080fd5b600091505b838210156200018e57858201830151818301840152908201906200016f565b600093810190920192909252949350505050565b60008060008060008060008060008060006101608c8e031215620001c557600080fd5b620001d08c620000c0565b9a5060208c0151995060408c0151985060608c0151975060808c01519650620001fc60a08d01620000c0565b95506200020c60c08d01620000c0565b60e08d01516101008e015191965094506001600160401b038111156200023157600080fd5b6200023f8e828f01620000f3565b6101208e015190945090506001600160401b038111156200025f57600080fd5b6200026d8e828f01620000f3565b6101408e015190935090506001600160401b038111156200028d57600080fd5b6200029b8e828f01620000f3565b9150509295989b509295989b9093969950565b600181811c90821680620002c357607f821691505b602082108103620002e457634e487b7160e01b600052602260045260246000fd5b50919050565b601f8211156200033857600081815260208120601f850160051c81016020861015620003135750805b601f850160051c820191505b8181101562000334578281556001016200031f565b5050505b505050565b81516001600160401b03811115620003595762000359620000dd565b62000371816200036a8454620002ae565b84620002ea565b602080601f831160018114620003a95760008415620003905750858301515b600019600386901b1c1916600185901b17855562000334565b600085815260208120601f198616915b82811015620003da57888601518255948401946001909101908401620003b9565b5085821015620003f95787850151600019600388901b60f8161c191681555b5050505050600190811b01905550565b608051610da962000456600039600081816102f30152818161039c015281816104840152818161069d01528181610765015281816108540152818161092a0152610a780152610da96000f3fe6080604052600436106100555760003560e01c806324600fc31461005a5780633290ce291461007157806344d00f821461007957806345f085a6146100a457806371007509146100c4578063c6ed8990146100cc575b600080fd5b34801561006657600080fd5b5061006f6100ec565b005b61006f6102a0565b34801561008557600080fd5b5061008e610462565b60405161009b9190610bb5565b60405180910390f35b3480156100b057600080fd5b5061006f6100bf366004610c76565b610685565b61006f6107f7565b3480156100d857600080fd5b5061006f6100e7366004610c76565b610a53565b600254479081101561011157604051635fd8526960e11b815260040160405180910390fd5b600b5460ff1615156001036101395760405163624a022f60e11b815260040160405180910390fd5b600060646007548361014b9190610ca5565b6101559190610cc2565b905060006101638284610ce4565b6006546040519192506000916001600160a01b039091169084908381818185875af1925050503d80600081146101b5576040519150601f19603f3d011682016040523d82523d6000602084013e6101ba565b606091505b50509050806101dc576040516320afa21360e11b815260040160405180910390fd5b6005546040516000916001600160a01b03169084908381818185875af1925050503d8060008114610229576040519150601f19603f3d011682016040523d82523d6000602084013e61022e565b606091505b50509050806102505760405163cb207dd160e01b815260040160405180910390fd5b600b805460ff1916600117905560405133907feaff4b37086828766ad3268786972c0cd24259d4c87a80f9d3963a3c3d999b0d906102919086815260200190565b60405180910390a25050505050565b346000036102c157604051632c7e767360e11b815260040160405180910390fd5b6000600354346102d19190610ca5565b6040516370a0823160e01b815230600482015290915081906001600160a01b037f000000000000000000000000000000000000000000000000000000000000000016906370a0823190602401602060405180830381865afa15801561033a573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061035e9190610cf7565b101561037d576040516329b2cd9760e11b815260040160405180910390fd5b60405163a9059cbb60e01b8152336004820152602481018290526000907f00000000000000000000000000000000000000000000000000000000000000006001600160a01b03169063a9059cbb906044016020604051808303816000875af11580156103ed573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906104119190610d10565b905080610431576040516312f6b88560e31b815260040160405180910390fd5b604051829033907f8f28852646c20cc973d3a8218f7eefed58c25c909f78f0265af4818c3d4dc27190600090a35050565b61046a610b11565b610472610b11565b6005546001600160a01b0390811682527f000000000000000000000000000000000000000000000000000000000000000016602082015260005460408201526002546060820152600154608082015260035460a0820152600880546104d690610d39565b80601f016020809104026020016040519081016040528092919081815260200182805461050290610d39565b801561054f5780601f106105245761010080835404028352916020019161054f565b820191906000526020600020905b81548152906001019060200180831161053257829003601f168201915b50505050508160c001819052506009805461056990610d39565b80601f016020809104026020016040519081016040528092919081815260200182805461059590610d39565b80156105e25780601f106105b7576101008083540402835291602001916105e2565b820191906000526020600020905b8154815290600101906020018083116105c557829003601f168201915b50505050508160e00181905250600a80546105fc90610d39565b80601f016020809104026020016040519081016040528092919081815260200182805461062890610d39565b80156106755780601f1061064a57610100808354040283529160200191610675565b820191906000526020600020905b81548152906001019060200180831161065857829003601f168201915b5050505050610100820152919050565b6040516370a0823160e01b81523060048201526000907f00000000000000000000000000000000000000000000000000000000000000006001600160a01b0316906370a0823190602401602060405180830381865afa1580156106ec573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906107109190610cf7565b905081811015610733576040516329b2cd9760e11b815260040160405180910390fd5b6005546040516323b872dd60e01b81523060048201526001600160a01b039182166024820152604481018490526000917f000000000000000000000000000000000000000000000000000000000000000016906323b872dd906064016020604051808303816000875af11580156107ae573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906107d29190610d10565b9050806107f2576040516312f6b88560e31b815260040160405180910390fd5b505050565b60015443111561081a57604051637318647f60e01b815260040160405180910390fd5b600254471061083c5760405163184953bd60e31b815260040160405180910390fd5b6040516370a0823160e01b81523360048201526000907f00000000000000000000000000000000000000000000000000000000000000006001600160a01b0316906370a0823190602401602060405180830381865afa1580156108a3573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906108c79190610cf7565b9050806000036108ea576040516324cf07b960e11b815260040160405180910390fd5b6000600354826108fa9190610ca5565b6040516323b872dd60e01b8152336004820152306024820152604481018490529091506000906001600160a01b037f000000000000000000000000000000000000000000000000000000000000000016906323b872dd906064016020604051808303816000875af1158015610973573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906109979190610d10565b9050806109b7576040516312f6b88560e31b815260040160405180910390fd5b604051600090339084908381818185875af1925050503d80600081146109f9576040519150601f19603f3d011682016040523d82523d6000602084013e6109fe565b606091505b5050905080610a20576040516358bb49bb60e01b815260040160405180910390fd5b604051839033907fbb28353e4598c3b9199101a66e0989549b659a59a54d2c27fbb183f1932c8e6d90600090a350505050565b6040516323b872dd60e01b8152336004820152306024820152604481018290526000907f00000000000000000000000000000000000000000000000000000000000000006001600160a01b0316906323b872dd906064016020604051808303816000875af1158015610ac9573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610aed9190610d10565b905080610b0d576040516312f6b88560e31b815260040160405180910390fd5b5050565b60405180610120016040528060006001600160a01b0316815260200160006001600160a01b03168152602001600081526020016000815260200160008152602001600081526020016060815260200160608152602001606081525090565b6000815180845260005b81811015610b9557602081850181015186830182015201610b79565b506000602082860101526020601f19601f83011685010191505092915050565b60208152610bcf6020820183516001600160a01b03169052565b60006020830151610beb60408401826001600160a01b03169052565b506040830151606083015260608301516080830152608083015160a083015260a083015160c083015260c08301516101208060e0850152610c30610140850183610b6f565b915060e0850151601f19610100818786030181880152610c508584610b6f565b908801518782039092018488015293509050610c6c8382610b6f565b9695505050505050565b600060208284031215610c8857600080fd5b5035919050565b634e487b7160e01b600052601160045260246000fd5b8082028115828204841417610cbc57610cbc610c8f565b92915050565b600082610cdf57634e487b7160e01b600052601260045260246000fd5b500490565b81810381811115610cbc57610cbc610c8f565b600060208284031215610d0957600080fd5b5051919050565b600060208284031215610d2257600080fd5b81518015158114610d3257600080fd5b9392505050565b600181811c90821680610d4d57607f821691505b602082108103610d6d57634e487b7160e01b600052602260045260246000fd5b5091905056fea2646970667358221220f7742b84be584ef3d6e440da9a186b390f6269d680dc0cb09c21140148cc575764736f6c63430008140033a26469706673582212206fe038b0fd4f086d0e65494888fe5bced0466f0a04f29b63d4684f3b3f71b48964736f6c63430008140033",
+  "devdoc": {
+    "author": "Muhammad Zain Nasir",
+    "kind": "dev",
+    "methods": {
+      "deployFundingVault(address,uint256,uint256,uint256,uint256,address,address,uint256,string,string,string)": {
+        "params": {
+          "_blockLimit": "The date (block height) limit until which withdrawal or after which refund is allowed.",
+          "_developerFeeAddress": "the address for the developer fee",
+          "_developerFeePercentage": "the percentage fee for the developer.",
+          "_minFundingAmount": "The minimum amount required to make withdraw of funds possible",
+          "_participationToken": "The token that will be used as participation token to incentivise donators",
+          "_participationTokenAmount": "Theinitial  participation token amount which will be in fundingVault",
+          "_projectURL": "A link or hash containing the project's information (e.g., GitHub repository).",
+          "_withdrawlAddress": "The address for withdrawl of funds"
+        }
+      },
+      "getVaults(uint256,uint256)": {
+        "details": "to access the list of all the available funding vaults on the platform "
+      }
+    },
+    "title": "FundingVaultFactory",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {
+      "getVaults(uint256,uint256)": {
+        "notice": "Get list of all funding vaults"
+      }
+    },
+    "notice": "This is the FundingVaultFactory contract that will be used for deployment and keeping track of all the funding vaults.",
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 680,
+        "contract": "contracts/FundingVaultFactory.sol:FundingVaultFactory",
+        "label": "vaults",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_mapping(t_uint256,t_struct(Vault)675_storage)"
+      },
+      {
+        "astId": 683,
+        "contract": "contracts/FundingVaultFactory.sol:FundingVaultFactory",
+        "label": "participationToken",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_contract(IERC20)77"
+      },
+      {
+        "astId": 685,
+        "contract": "contracts/FundingVaultFactory.sol:FundingVaultFactory",
+        "label": "s_fundingVaultIdCounter",
+        "offset": 0,
+        "slot": "2",
+        "type": "t_uint256"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_contract(IERC20)77": {
+        "encoding": "inplace",
+        "label": "contract IERC20",
+        "numberOfBytes": "20"
+      },
+      "t_mapping(t_uint256,t_struct(Vault)675_storage)": {
+        "encoding": "mapping",
+        "key": "t_uint256",
+        "label": "mapping(uint256 => struct FundingVaultFactory.Vault)",
+        "numberOfBytes": "32",
+        "value": "t_struct(Vault)675_storage"
+      },
+      "t_string_storage": {
+        "encoding": "bytes",
+        "label": "string",
+        "numberOfBytes": "32"
+      },
+      "t_struct(Vault)675_storage": {
+        "encoding": "inplace",
+        "label": "struct FundingVaultFactory.Vault",
+        "members": [
+          {
+            "astId": 668,
+            "contract": "contracts/FundingVaultFactory.sol:FundingVaultFactory",
+            "label": "vaultAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address"
+          },
+          {
+            "astId": 670,
+            "contract": "contracts/FundingVaultFactory.sol:FundingVaultFactory",
+            "label": "title",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_string_storage"
+          },
+          {
+            "astId": 672,
+            "contract": "contracts/FundingVaultFactory.sol:FundingVaultFactory",
+            "label": "description",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_string_storage"
+          },
+          {
+            "astId": 674,
+            "contract": "contracts/FundingVaultFactory.sol:FundingVaultFactory",
+            "label": "deadline",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_uint256"
+          }
+        ],
+        "numberOfBytes": "128"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  }
+}
