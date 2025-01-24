@@ -28,13 +28,14 @@ pragma solidity ^0.8.18;
 
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 /**
  * @title FundingVault
  * @author Muhammad Zain Nasir
  * @notice A contract that allows users to deposit funds and receive proof-of-funding token in return box creator can call WithdrawFunds if there enough funds collected
  */
-contract FundingVault{
+contract FundingVault is ERC20 {
 
     // Errors //
     error MinFundingAmountReached();
@@ -108,7 +109,7 @@ contract FundingVault{
         string memory _projectURL, // A link or hash containing the project's information (e.g., GitHub repository).
         string memory _projectTitle, // Name of the Project
         string memory _projectDescription // Short description of the project
-    ) {
+    )ERC20("Voucher", "VCHR") {
         
         proofOfFundingToken  = IERC20(_proofOfFundingToken);
         proofOfFundingTokenAmount  = _proofOfFundingTokenAmount ;
@@ -133,7 +134,7 @@ contract FundingVault{
 
         uint256 tokenAmount = msg.value * exchangeRate;
 
-        if (proofOfFundingToken.balanceOf(address(this)) < tokenAmount) revert NotEnoughTokens();
+        if (proofOfFundingToken.balanceOf(address(this)) - totalSupply() < tokenAmount) revert NotEnoughTokens();
         proofOfFundingToken.safeTransfer(msg.sender,tokenAmount);
 
         amountRaised = amountRaised + msg.value;
@@ -151,10 +152,10 @@ contract FundingVault{
         
         if (amountRaised >= minFundingAmount) revert MinFundingAmountReached();
         
-        uint tokensHeld = proofOfFundingToken.balanceOf(msg.sender);
-        uint256 refundAmount = tokensHeld * exchangeRate;
+        uint256 voucherAmount = balanceOf(msg.sender);
+        uint256 refundAmount = voucherAmount / exchangeRate;
 
-        proofOfFundingToken.safeTransferFrom(msg.sender,address(this),tokensHeld);
+        _burn(msg.sender, voucherAmount);
        
         (bool ethTransferSuccess, ) = payable(msg.sender).call{value: refundAmount}("");
 
@@ -193,7 +194,7 @@ contract FundingVault{
     */
 
      function withdrawUnsoldTokens(uint256 UnsoldTokenAmount) external onlyOwner {
-        if (proofOfFundingToken.balanceOf(address(this)) < UnsoldTokenAmount) revert NotEnoughTokens();
+        if (proofOfFundingToken.balanceOf(address(this)) - totalSupply() < UnsoldTokenAmount) revert NotEnoughTokens();
         
         proofOfFundingToken.safeTransferFrom(address(this),withdrawalAddress,UnsoldTokenAmount);
        
@@ -205,6 +206,13 @@ contract FundingVault{
     */
     function addTokens(uint256 additionalTokens) external onlyOwner {
         proofOfFundingToken.safeTransferFrom(msg.sender,address(this),additionalTokens);
+    }
+
+    function redeem() external {
+        if (block.timestamp < timestamp)  revert DeadlineNotPassed();
+        uint256 voucherAmount = balanceOf(msg.sender);
+        _burn(msg.sender,voucherAmount);
+        proofOfFundingToken.safeTransfer(msg.sender, voucherAmount);
     }
 
     /**
