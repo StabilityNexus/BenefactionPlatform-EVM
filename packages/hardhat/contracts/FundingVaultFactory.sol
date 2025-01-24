@@ -1,5 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
-
+// SPDX-License-Identifier: AEL
 
 /**
  * Layout of the contract
@@ -23,10 +22,11 @@
  * getters
  */
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.19;
 
 import {FundingVault} from "./FundingVault.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 /**
  * @title FundingVaultFactory
@@ -34,14 +34,16 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
  * @notice This is the FundingVaultFactory contract that will be used for deployment and keeping track of all the funding vaults.
  */
 contract FundingVaultFactory{
-    // Errors //
-    error FundingVaultFactory__CannotBeAZeroAddress();
-    error FundingVaultFactory__deadlineCannotBeInThePast();
-    error FundingVaultFactory__MinFundingAmountCanNotBeZero();
-    error FundingVault__TokenTransferFailed();
-    error FundingVaultFactory__InvalidIndex();
 
-    struct Vault{
+    // Errors //
+    error CannotBeAZeroAddress();
+    error deadlineCannotBeInThePast();
+    error MinFundingAmountCanNotBeZero();
+    error InvalidIndex();
+
+
+    //Type declarations
+    struct Vault {
         address vaultAddress;
         string title;
         string description;
@@ -50,13 +52,11 @@ contract FundingVaultFactory{
 
 
     // State Variables //
-    mapping(uint256 => Vault) private vaults;
+    mapping(uint256 => Vault) public vaults;
 
-    IERC20 private participationToken;
+    using SafeERC20 for IERC20;
+    IERC20 private proofOfFundingToken;
     uint256 private s_fundingVaultIdCounter;
-
-    
-
 
 
     // Events //
@@ -66,51 +66,47 @@ contract FundingVaultFactory{
     // Functions //
 
     /**
-     * @param _participationToken The token that will be used as participation token to incentivise donators
-     * @param _participationTokenAmount Theinitial  participation token amount which will be in fundingVault
+     * @param _proofOfFundingToken The token that will be used as proof-of-funding token to incentivise donators
+     * @param _proofOfFundingTokenAmount The initial  proof-of-funding token amount which will be in fundingVault
      * @param _minFundingAmount The minimum amount required to make withdraw of funds possible
-     * @param _blockLimit The date (block height) limit until which withdrawal or after which refund is allowed.
-     * @param _withdrawlAddress The address for withdrawl of funds
+     * @param _timestamp The date (block height) limit until which withdrawal or after which refund is allowed.
+     * @param _withdrawalAddress The address for withdrawal of funds
      * @param _developerFeeAddress the address for the developer fee
      * @param _developerFeePercentage the percentage fee for the developer.
      * @param _projectURL A link or hash containing the project's information (e.g., GitHub repository).
      */
-    function deployFundingVault(
-        address _participationToken,
-        uint256 _participationTokenAmount,  
+    function deployFundingVault (
+        address _proofOfFundingToken,
+        uint256 _proofOfFundingTokenAmount,  
         uint256 _minFundingAmount,
-        uint256 _blockLimit,
+        uint256 _timestamp,
         uint256 _exchangeRate,
-        address _withdrawlAddress,
+        address _withdrawalAddress,
         address _developerFeeAddress, 
         uint256 _developerFeePercentage, 
         string memory _projectURL,
         string memory _projectTitle,
         string memory _projectDescription
     ) external returns (address) {
-        if (_participationToken == address(0) || _withdrawlAddress == address(0) || _developerFeeAddress == address(0)){
-            revert FundingVaultFactory__CannotBeAZeroAddress();
-        }
-        if (block.number > _blockLimit) {
-            revert FundingVaultFactory__deadlineCannotBeInThePast();
-        }
-        if (_minFundingAmount == 0) {
-            revert FundingVaultFactory__MinFundingAmountCanNotBeZero();
-        }
+        if (_proofOfFundingToken == address(0) || _withdrawalAddress == address(0) || _developerFeeAddress == address(0))  revert CannotBeAZeroAddress();
+
+        if (block.timestamp > _timestamp) revert deadlineCannotBeInThePast();
+        
+        if (_minFundingAmount == 0) revert MinFundingAmountCanNotBeZero();
 
 
 
         s_fundingVaultIdCounter++;
         uint256 fundingVaultId = s_fundingVaultIdCounter;
-        participationToken = IERC20(_participationToken);
+        proofOfFundingToken = IERC20(_proofOfFundingToken);
 
-        FundingVault fundingVault = new FundingVault(
-        _participationToken,
-        _participationTokenAmount,  
+        FundingVault fundingVault = new FundingVault (
+        _proofOfFundingToken,
+        _proofOfFundingTokenAmount,  
         _minFundingAmount,
-        _blockLimit,
+        _timestamp,
         _exchangeRate,
-        _withdrawlAddress,
+        _withdrawalAddress,
         _developerFeeAddress, 
         _developerFeePercentage, 
         _projectURL,
@@ -118,14 +114,13 @@ contract FundingVaultFactory{
         _projectDescription
         );
 
-        
-        transferParticipationTokens(msg.sender, address(fundingVault), _participationTokenAmount);
+        proofOfFundingToken.safeTransferFrom(msg.sender,address(fundingVault),_proofOfFundingTokenAmount);
 
         Vault storage vault = vaults[fundingVaultId];
         vault.vaultAddress = address(fundingVault);
         vault.title = _projectTitle;
         vault.description = _projectDescription;
-        vault.deadline = _blockLimit;
+        vault.deadline = _timestamp;
         
         emit FundingVaultDeployed(address(fundingVault));     
         return address(fundingVault);
@@ -137,30 +132,15 @@ contract FundingVaultFactory{
      */ 
     function getVaults(uint256 start, uint256 end) external view returns(Vault[] memory)
     {
-        if(end > s_fundingVaultIdCounter || start > end || start == 0)
-        {
-            revert FundingVaultFactory__InvalidIndex();
-        }
+        if (end > s_fundingVaultIdCounter || start > end || start == 0)  revert InvalidIndex();
+
         Vault[] memory allVaults = new Vault[](end - start + 1);
 
-        for(uint i = start; i <= end;i++)
+        for (uint i = start; i <= end;i++)
         {
             allVaults[i - start] = vaults[i];
         }
         return allVaults;
-    }
-
-    function transferParticipationTokens(address from, address to, uint256 amount) private{
-        bool tokenTransferSuccess = participationToken.transferFrom(from, to, amount);
-        if (!tokenTransferSuccess){
-            revert FundingVault__TokenTransferFailed();
-        }
-    }
-
-
-    // Getters //
-    function getFundingVault(uint256 _fundingVaultId) external view returns (address) {
-        return vaults[_fundingVaultId].vaultAddress;
     }
 
     function getTotalNumberOfFundingVaults() external view returns (uint256) {
