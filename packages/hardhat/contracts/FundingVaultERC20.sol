@@ -16,6 +16,7 @@ contract FundingVault {
 	error DeadlineNotPassed();
 	error NotEnoughTokens();
 	error OwnerOnly();
+    erro InvalidAmount();
 
 	// State Variables
 	using SafeERC20 for IERC20;
@@ -25,7 +26,8 @@ contract FundingVault {
 	uint256 public immutable minFundingAmount;
 	uint256 public proofOfFundingTokenAmount;
 	uint256 public timestamp;
-	uint256 public exchangeRate;
+	uint256 public immutable exchangeRate; // Numerator
+    uint256 public constant DENOMINATOR = 100000; // Fixed denominator
 	address public withdrawalAddress;
 	address private developerFeeAddress;
 	uint256 private developerFeePercentage;
@@ -75,9 +77,9 @@ contract FundingVault {
 	}
 
 	function purchaseTokens(uint256 amount) external {
-		if (amount == 0) revert MinFundingAmountNotReached();
+		if (amount == 0) revert InvalidAmount();
 
-		uint256 tokenAmount = amount * exchangeRate;
+		uint256 tokenAmount = (amount * exchangeRate) / DENOMINATOR;
 		if (proofOfFundingToken.balanceOf(address(this)) < tokenAmount)
 			revert NotEnoughTokens();
 
@@ -94,7 +96,7 @@ contract FundingVault {
 		if (amountRaised >= minFundingAmount) revert MinFundingAmountReached();
 
 		uint256 tokensHeld = proofOfFundingToken.balanceOf(msg.sender);
-		uint256 refundAmount = tokensHeld / exchangeRate;
+		uint256 refundAmount = (tokensHeld * DENOMINATOR) / exchangeRate;
 
 		proofOfFundingToken.safeTransferFrom(
 			msg.sender,
