@@ -26,7 +26,7 @@ contract FundingVault {
 	uint256 public immutable minFundingAmount;
 	uint256 public proofOfFundingTokenAmount;
 	uint256 public timestamp;
-	uint256 public immutable exchangeRate; // Numerator
+	uint256 public  exchangeRate; // Numerator
     uint256 public constant DENOMINATOR = 100000; // Fixed denominator
 	address public withdrawalAddress;
 	address private developerFeeAddress;
